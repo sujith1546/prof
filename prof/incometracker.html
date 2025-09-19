@@ -268,10 +268,10 @@
 
       console.log('All transactions:', allTransactions);
 
-      // Filter for spending category only from transactions table
+      // Filter for income category only from transactions table
       expenses = allTransactions.filter(transaction => {
-        // Show only transactions where category is 'spending'
-        if (transaction.category === 'spending') return true;
+        // Show only transactions where category is 'income'
+        if (transaction.category === 'income') return true;
         
         return false;
       });
