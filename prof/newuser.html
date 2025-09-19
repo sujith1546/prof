@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Finance Tracker - Add User</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+  }
+  .container {
+    display: flex;
+    flex: 1;
+  }
+  .left {
+    flex: 1;
+    background-color: #f2f2f2;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+  }
+  .right {
+    flex: 1;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: #333;
+    flex-direction: column;
+    text-align: center;
+  }
+  h2 { margin-bottom: 20px; }
+  input { width: 100%; padding: 10px; margin: 10px 0; }
+  .buttonContainer { display: flex; gap: 10px; margin-top: 10px; }
+  button {
+    flex: 1;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+  button[type="submit"] { background-color: #007bff; }
+  button[type="submit"]:hover { background-color: #0056b3; }
+  button[type="button"] { background-color: #ff0000; }
+  button[type="button"]:hover { background-color: #cc0000; }
+
+  /* Success message animation */
+  .success {
+    margin-top: 20px;
+    color: green;
+    font-weight: bold;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  .success.animate {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="left">
+    <h2>Welcome New User</h2>
+    <form id="userForm" autocomplete="off">
+      <label for="name">Name</label>
+      <input type="text" id="name" placeholder="Enter your name" required>
+
+      <label for="age">Age</label>
+      <input type="number" id="age" placeholder="Enter your age" required>
+
+      <label for="gmail">Gmail</label>
+      <input type="email" id="gmail" placeholder="Enter your Gmail" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password" required>
+
+      <div class="buttonContainer">
+        <button type="submit">Create User</button>
+        <button type="button" onclick="goBack()">Go Back</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="right">
+    <p>Welcome New User! Please enter your details</p>
+    <div class="success" id="successMsg"></div>
+  </div>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+  const supabaseUrl = 'https://xqzdvxyefnhekxaujivq.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxemR2eHllZm5oZWt4YXVqaXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyMTc1MjksImV4cCI6MjA3Mzc5MzUyOX0.RR4VMAQ6CikKyELyY_tSAlfspX5i65fpAEaEbBqF9co';
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  const form = document.getElementById('userForm');
+  const successMsg = document.getElementById('successMsg');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const age = parseInt(document.getElementById('age').value);
+    const gmail = document.getElementById('gmail').value;
+    const password = document.getElementById('password').value;
+
+    const { data, error } = await supabase
+      .from('users')
+      .insert([{ name, age, gmail, password }]);
+
+    if (error) {
+      successMsg.textContent = `Error: ${error.message}`;
+      successMsg.style.color = 'red';
+    } else {
+      successMsg.textContent = `User ${name} created successfully! Redirecting...`;
+      successMsg.style.color = 'green';
+
+      // Start animation after 1 second
+      setTimeout(() => {
+        successMsg.classList.add('animate');
+      }, 1000);
+
+      // Redirect after 3 seconds
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 3000);
+
+      form.reset();
+    }
+  });
+
+  function goBack() {
+    window.location.href = "index.html";
+  }
+
+  window.onload = () => {
+    form.reset();
+    successMsg.textContent = '';
+  };
+</script>
+
+</body>
+</html>

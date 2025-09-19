@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transactions</title>
+  <style>
+    body { font-family: Arial; margin: 0; padding: 0; background-color: #f2f2f2; height: 100vh; overflow: hidden; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background-color: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+    #userName { font-size: 22px; font-weight: bold; color: #007bff; }
+    #logoutBtn { padding: 8px 16px; background-color: #ff0000; color: white; border: none; cursor: pointer; border-radius: 5px; font-size: 16px; }
+    #logoutBtn:hover { background-color: #cc0000; }
+    .main-container { display: flex; height: calc(100vh - 72px); overflow: hidden; }
+    .sidebar { width: 80px; background-color: #fff; box-shadow: 2px 0 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; padding: 20px 0; gap: 25px; }
+    .sidebar-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 8px; transition: all 0.3s ease; position: relative; }
+    .sidebar-icon.active { background-color: #007bff; color: white; }
+    .sidebar-icon svg { width: 24px; height: 24px; fill: #666; }
+    .sidebar-icon.active svg { fill: white; }
+    .content-container { flex: 1; padding: 40px; overflow: hidden; height: 100%; }
+    .page-title { font-size: 24px; margin-bottom: 20px; color: #333; }
+    .subnav { width: 160px; background: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 6px; }
+    .subnav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; color: #6b7280; cursor: pointer; user-select: none; font-size: 14px; text-decoration: none; }
+    .subnav-item:hover { background: #f5f7fb; }
+    .subnav-item.active { background: #e6f0ff; color: #0b5cff; }
+    .subnav-item svg { width: 18px; height: 18px; fill: currentColor; opacity: 0.9; }
+    .subnav-title { font-weight: 600; font-size: 14px; }
+    .subnav-spacer { height: 6px; }
+    .tx-layout { display: flex; gap: 16px; align-items: flex-start; }
+    .tx-content { flex: 1; background: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 0; overflow-y: auto; height: calc(100vh - 200px); }
+    .tx-frame { width: 100%; height: 100%; border: 0; display: block; }
+    @media (max-width: 600px) { .subnav { width: 140px; } }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div id="userName">Loading...</div>
+  <button id="logoutBtn">Logout</button>
+  </div>
+
+<div class="main-container">
+  <div class="sidebar">
+    <a class="sidebar-icon" data-tooltip="Dashboard" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+    </a>
+    <a class="sidebar-icon active" data-tooltip="Transactions" href="transactions.html">
+      <svg viewBox="0 0 24 24"><path d="M20,8H4V6H20V8M20,16H4V12H20V16Z"/></svg>
+    </a>
+    <a class="sidebar-icon" data-tooltip="Money Management" href="money-management.html">
+      <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10M12,15C10.33,15 7,15.67 7,17V18H17V17C17,15.67 13.67,15 12,15Z"/></svg>
+    </a>
+    <a class="sidebar-icon" data-tooltip="Financial Goals" href="financial-goals.html">
+      <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"/></svg>
+    </a>
+    <a class="sidebar-icon" data-tooltip="Reports & Analytics" href="reports-analytics.html">
+      <svg viewBox="0 0 24 24"><path d="M22,21H2V3H4V19H6V17H10V19H12V16H16V19H18V17H22V21M18,14H22V16H18V14M12,6H16V9H12V6M16,15H12V10H16V15M6,10H10V12H6V10M10,13H6V15H10V13Z"/></svg>
+    </a>
+    <a class="sidebar-icon" data-tooltip="Notifications & Alerts" href="notifications-alerts.html">
+      <svg viewBox="0 0 24 24"><path d="M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21"/></svg>
+    </a>
+  </div>
+
+  <div class="content-container">
+    <div id="page-content">
+      <div class="page-title">Transactions</div>
+      <div class="tx-layout">
+        <div class="subnav">
+          <a class="subnav-item active" href="overview.html" target="tx-frame">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="11" y="3" width="10" height="6" rx="1"/><rect x="3" y="11" width="10" height="10" rx="1"/><rect x="15" y="11" width="6" height="10" rx="1"/></svg>
+          <span class="subnav-title">Overview</span>
+          </a>
+          <a class="subnav-item" href="addincome.html" target="tx-frame">
+          <svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm-7 9a7 7 0 0 1 14 0v1H5v-1Z"/></svg>
+          <span class="subnav-title">Add income</span>
+          </a>
+          <a class="subnav-item" href="scan.html" target="tx-frame">
+          <svg viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M8 12h8M12 8v8"/></svg>
+          <span class="subnav-title">Scan</span>
+          </a>
+          <a class="subnav-item" href="incometracker.html" target="tx-frame">
+          <svg viewBox="0 0 24 24"><path d="M3 7h18v2H3V7Zm0 4h18v2H3v-2Zm0 4h12v2H3v-2Z"/></svg>
+          <span class="subnav-title">Income Tracker</span>
+          </a>
+          <a class="subnav-item" href="addspendings.html" target="tx-frame">
+          <svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10ZM4 20a8 8 0 1 1 16 0v1H4v-1Z"/></svg>
+          <span class="subnav-title">Add Spendings</span>
+          </a>
+          <a class="subnav-item" href="spendingtracker.html" target="tx-frame">
+          <svg viewBox="0 0 24 24"><path d="M7 4V2C7 1.45 7.45 1 8 1H16C16.55 1 17 1.45 17 2V4H20C20.55 4 21 4.45 21 5S20.55 6 20 6H19V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V6H4C3.45 6 3 5.55 3 5S3.45 4 4 4H7M9 3V4H15V3H9M7 6V19H17V6H7M9 8H11V17H9V8M13 8H15V17H13V8Z"/></svg>
+          <span class="subnav-title">Spending Tracker</span>
+          </a>
+          <a class="subnav-item" href="#" target="tx-frame">
+          <svg viewBox="0 0 24 24"><path d="M12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm0-6a1 1 0 0 1 1 1v2h-2V3a1 1 0 0 1 1-1Zm0 18a1 1 0 0 1 1 1v2h-2v-2a1 1 0 0 1 1-1Zm10-8a1 1 0 0 1-1 1h-2v-2h2a1 1 0 0 1 1 1ZM5 13H3v-2h2v2Z"/></svg>
+          <span class="subnav-title">Set up</span>
+          </a>
+        </div>
+        <div class="tx-content">
+          <iframe class="tx-frame" name="tx-frame" src="overview.html"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+  const supabaseUrl = 'https://xqzdvxyefnhekxaujivq.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxemR2eHllZm5oZWt4YXVqaXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyMTc1MjksImV4cCI6MjA3Mzc5MzUyOX0.RR4VMAQ6CikKyELyY_tSAlfspX5i65fpAEaEbBqF9co';
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  const userNameDiv = document.getElementById('userName');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  async function loadUser() {
+    const email = localStorage.getItem('currentUserEmail');
+    if (!email) return window.location.href = 'exisuser.html';
+    const { data: users } = await supabase.from('users').select('*').eq('gmail', email);
+    if (users && users.length) userNameDiv.textContent = `Hello, ${users[0].name}`; else userNameDiv.textContent = 'User';
+  }
+
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('currentUserEmail');
+    window.location.href = 'index.html';
+  });
+
+  // Handle submenu active state switching
+  document.querySelectorAll('.subnav-item').forEach(item => {
+    item.addEventListener('click', function(e) {
+      // Remove active class from all items
+      document.querySelectorAll('.subnav-item').forEach(link => link.classList.remove('active'));
+      // Add active class to clicked item
+      this.classList.add('active');
+    });
+  });
+
+  // Static informational sections on this page; no transaction form here.
+
+  loadUser();
+</script>
+
+</body>
+</html>
+
+

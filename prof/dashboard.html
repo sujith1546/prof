@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard</title>
+  <style>
+    body {
+      font-family: Arial;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+      height: 100vh;
+      overflow: hidden;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    #userName {
+      font-size: 22px;
+      font-weight: bold;
+      color: #007bff;
+    }
+    
+    #logoutBtn {
+      padding: 8px 16px;
+      background-color: #ff0000;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    
+    #logoutBtn:hover {
+      background-color: #cc0000;
+    }
+    
+    .main-container {
+      display: flex;
+      height: calc(100vh - 72px);
+      overflow: hidden;
+    }
+    
+    .sidebar {
+      width: 80px;
+      background-color: #fff;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      gap: 25px;
+    }
+    
+    .sidebar-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .sidebar-icon:hover {
+      background-color: #f0f0f0;
+      transform: scale(1.1);
+    }
+    
+    .sidebar-icon.active {
+      background-color: #007bff;
+      color: white;
+    }
+    
+    .sidebar-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: #666;
+      transition: fill 0.3s ease;
+    }
+    
+    .sidebar-icon:hover svg {
+      fill: #333;
+    }
+    
+    .sidebar-icon.active svg {
+      fill: white;
+    }
+    
+    .content-container {
+      flex: 1;
+      padding: 40px;
+      overflow: hidden;
+      background-color: #f2f2f2;
+    }
+
+    .dashboard-content {
+      text-align: center;
+      font-size: 28px;
+      color: #333;
+      padding: 40px;
+    }
+
+    .loading-spinner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+      font-size: 16px;
+      color: #666;
+    }
+    
+    .error-message {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+      font-size: 16px;
+      color: #dc3545;
+      text-align: center;
+    }
+
+    /* Tooltip */
+    .sidebar-icon::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: 60px;
+      background-color: #333;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+    
+    .sidebar-icon:hover::after {
+      opacity: 1;
+    }
+
+    /* Transaction Form Styles */
+    .transaction-form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+    .transaction-form h2 { margin-bottom: 20px; }
+    .transaction-form label { display: block; margin: 10px 0 5px; }
+    .transaction-form input, 
+    .transaction-form select, 
+    .transaction-form textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .transaction-form button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .transaction-form button:hover {
+      background-color: #0056b3;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div id="userName">Loading...</div>
+  <button id="logoutBtn">Logout</button>
+</div>
+
+  <div class="main-container">
+    <div class="sidebar">
+      <div class="sidebar-icon active" data-tooltip="Dashboard" onclick="showSection(event, 'dashboard')">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+      </div>
+      <div class="sidebar-icon" data-tooltip="Transactions" onclick="showSection(event, 'transactions')">
+        <svg viewBox="0 0 24 24"><path d="M20,8H4V6H20V8M20,16H4V12H20V16Z"/></svg>
+      </div>
+      <div class="sidebar-icon" data-tooltip="Money Management" onclick="showSection(event, 'money-management')">
+        <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10M12,15C10.33,15 7,15.67 7,17V18H17V17C17,15.67 13.67,15 12,15Z"/></svg>
+      </div>
+      <div class="sidebar-icon" data-tooltip="Financial Goals" onclick="showSection(event, 'financial-goals')">
+        <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"/></svg>
+      </div>
+      <div class="sidebar-icon" data-tooltip="Reports & Analytics" onclick="showSection(event, 'reports-analytics')">
+        <svg viewBox="0 0 24 24"><path d="M22,21H2V3H4V19H6V17H10V19H12V16H16V19H18V17H22V21M18,14H22V16H18V14M12,6H16V9H12V6M16,15H12V10H16V15M6,10H10V12H6V10M10,13H6V15H10V13Z"/></svg>
+      </div>
+      <div class="sidebar-icon" data-tooltip="Notifications & Alerts" onclick="showSection(event, 'notifications-alerts')">
+        <svg viewBox="0 0 24 24"><path d="M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21"/></svg>
+      </div>
+    </div>
+
+  <div class="content-container" id="main-content">
+    <div class="dashboard-content">Welcome to your dashboard!</div>
+  </div>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+  
+  const supabaseUrl = 'https://xqzdvxyefnhekxaujivq.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxemR2eHllZm5oZWt4YXVqaXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyMTc1MjksImV4cCI6MjA3Mzc5MzUyOX0.RR4VMAQ6CikKyELyY_tSAlfspX5i65fpAEaEbBqF9co';
+  const supabase = createClient(supabaseUrl, supabaseKey);
+  
+  const userNameDiv = document.getElementById('userName');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const mainContent = document.getElementById('main-content');
+  
+  let currentUser = null;
+  
+  const pageMap = {
+    'dashboard': null,
+    'transactions': 'transactions.html',
+    'money-management': 'money-management.html',
+    'financial-goals': 'financial-goals.html',
+    'reports-analytics': 'reports-analytics.html',
+    'notifications-alerts': 'notifications-alerts.html'
+  };
+  
+  async function loadUser() {
+    const email = localStorage.getItem('currentUserEmail');
+    if (!email) return window.location.href = 'exisuser.html';
+    
+    const { data: users, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('gmail', email);
+    
+    if (error || users.length === 0) {
+      userNameDiv.textContent = "Error fetching user!";
+      userNameDiv.style.color = 'red';
+    } else {
+      currentUser = users[0];
+      userNameDiv.textContent = `Hello, ${currentUser.name}`;
+    }
+  }
+  
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('currentUserEmail');
+    window.location.href = 'index.html';
+  });
+  
+  async function loadPageContent(pageName) {
+    const pageFile = pageMap[pageName];
+    if (!pageFile) {
+      mainContent.innerHTML = `<div class="dashboard-content">Welcome to your dashboard!</div>`;
+      return;
+    }
+    mainContent.innerHTML = `<div class="loading-spinner">Loading ${pageName.replace('-', ' ')}...</div>`;
+    try {
+      const response = await fetch(pageFile, { cache: 'no-cache' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}: Failed to load ${pageFile}`);
+      const htmlContent = await response.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlContent, 'text/html');
+      const pageSection = doc.querySelector('#page-content');
+      if (pageSection) {
+        mainContent.innerHTML = pageSection.innerHTML;
+      } else {
+        mainContent.innerHTML = doc.body.innerHTML;
+      }
+    } catch (error) {
+      mainContent.innerHTML = `
+        <div class="error-message">
+          <div>
+            <h3>Unable to load ${pageName.replace('-', ' ')}</h3>
+            <p>${error.message}</p>
+            <p style="color:#666">Tip: If you're opening files directly, run a local server and open over http://</p>
+            <button onclick="showSection(event, 'dashboard')">Back to Dashboard</button>
+          </div>
+        </div>
+      `;
+    }
+  }
+  
+  window.showSection = function(evt, sectionName) {
+    document.querySelectorAll('.sidebar-icon').forEach(icon => icon.classList.remove('active'));
+    evt.currentTarget.classList.add('active');
+    loadPageContent(sectionName);
+  }
+  
+  loadUser();
+</script>
+</body>
+</html>
