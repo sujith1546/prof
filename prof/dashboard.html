@@ -102,9 +102,20 @@
     
     .content-container {
       flex: 1;
-      padding: 40px;
       overflow: hidden;
       background-color: #f2f2f2;
+      position: relative;
+    }
+    
+    #content-frame {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
     }
 
     .dashboard-content {
@@ -218,6 +229,7 @@
     </div>
 
   <div class="content-container" id="main-content">
+    <iframe id="content-frame" style="width: 100%; height: 100%; border: none; overflow: hidden; display: none;"></iframe>
     <div class="dashboard-content">Welcome to your dashboard!</div>
   </div>
 </div>
@@ -269,34 +281,21 @@
   
   async function loadPageContent(pageName) {
     const pageFile = pageMap[pageName];
+    const contentFrame = document.getElementById('content-frame');
+    const dashboardContent = mainContent.querySelector('.dashboard-content');
+    
     if (!pageFile) {
-      mainContent.innerHTML = `<div class="dashboard-content">Welcome to your dashboard!</div>`;
+      // Show dashboard content, hide iframe
+      if (contentFrame) contentFrame.style.display = 'none';
+      if (dashboardContent) dashboardContent.style.display = 'block';
       return;
     }
-    mainContent.innerHTML = `<div class="loading-spinner">Loading ${pageName.replace('-', ' ')}...</div>`;
-    try {
-      const response = await fetch(pageFile, { cache: 'no-cache' });
-      if (!response.ok) throw new Error(`HTTP ${response.status}: Failed to load ${pageFile}`);
-      const htmlContent = await response.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(htmlContent, 'text/html');
-      const pageSection = doc.querySelector('#page-content');
-      if (pageSection) {
-        mainContent.innerHTML = pageSection.innerHTML;
-      } else {
-        mainContent.innerHTML = doc.body.innerHTML;
-      }
-    } catch (error) {
-      mainContent.innerHTML = `
-        <div class="error-message">
-          <div>
-            <h3>Unable to load ${pageName.replace('-', ' ')}</h3>
-            <p>${error.message}</p>
-            <p style="color:#666">Tip: If you're opening files directly, run a local server and open over http://</p>
-            <button onclick="showSection(event, 'dashboard')">Back to Dashboard</button>
-          </div>
-        </div>
-      `;
+
+    // Show iframe, hide dashboard content
+    if (dashboardContent) dashboardContent.style.display = 'none';
+    if (contentFrame) {
+      contentFrame.style.display = 'block';
+      contentFrame.src = pageFile;
     }
   }
   
