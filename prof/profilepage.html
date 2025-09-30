@@ -84,236 +84,416 @@
     display: block;
   }
 
+  /* Profile Section */
+  .profile-card {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 30px;
+    border: 1px solid #e5e7eb;
+  }
+
+  .profile-header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 24px;
+  }
+
+  .profile-avatar {
+    position: relative;
+  }
+
+  .profile-avatar img {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    border: 3px solid #2563eb;
+    object-fit: cover;
+  }
+
+  .profile-avatar-edit {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+  }
+
+  .profile-avatar-edit:hover {
+    background: #1d4ed8;
+  }
+
+  .profile-info h2 {
+    font-size: 24px;
+    color: #111827;
+    margin: 0 0 4px 0;
+    font-weight: 600;
+  }
+
+  .profile-info .restaurant-type {
+    display: inline-block;
+    background: #dbeafe;
+    color: #1e40af;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .profile-info p {
+    color: #6b7280;
+    font-size: 15px;
+    margin: 4px 0;
+  }
+
+  .profile-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+  }
+
+  .stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2563eb;
+    margin-bottom: 5px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 500;
+  }
+
+  .profile-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .detail-item i {
+    width: 36px;
+    height: 36px;
+    background-color: #eff6ff;
+    color: #2563eb;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .detail-content strong {
+    display: block;
+    font-size: 12px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+
+  .detail-content span {
+    display: block;
+    font-size: 15px;
+    color: #111827;
+    font-weight: 500;
+  }
+
+  /* Form Section */
+  .form-container {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 30px;
+    border: 1px solid #e5e7eb;
+  }
+
+  .form-container h2 {
+    font-size: 20px;
+    color: #111827;
+    margin: 0 0 24px 0;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 6px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    background: #ffffff;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+
+  .btn-primary {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-primary:hover {
+    background-color: #1d4ed8;
+  }
+
+  .btn-secondary {
+    background-color: #6b7280;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 10px;
+  }
+
+  .btn-secondary:hover {
+    background-color: #4b5563;
+  }
+
+  /* Donation Status */
+  .current-status {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    padding: 12px;
+    border-radius: 6px;
+    background: #f0f9ff;
+    border-left: 4px solid #2563eb;
+  }
+
+  .status-available {
+    background: #f0f9ff;
+    border-left-color: #10b981;
+  }
+
+  .status-unavailable {
+    background: #fef2f2;
+    border-left-color: #ef4444;
+  }
+
   /* Achievements Section - Clean Design */
   .achievements-container {
     display: grid;
     gap: 20px;
   }
 
-  .achievement-category {
-    background: #f9fafb;
-    border-radius: 8px;
-    padding: 25px;
-    border: 1px solid #e5e7eb;
-  }
-
-  .achievement-category h3 {
-    font-size: 18px;
-    color: #111827;
-    margin: 0 0 20px 0;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #e5e7eb;
-  }
-
-  .achievement-category h3 i {
-    color: #2563eb;
-  }
-
-  .achievements-grid {
-    display: grid;
-    gap: 16px;
-  }
-
-  .achievement-card {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 20px;
-    transition: all 0.3s ease;
-    position: relative;
-  }
-
-  .achievement-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  }
-
-  .achievement-card.completed {
-    border-left: 4px solid #10b981;
-  }
-
-  .achievement-card.in-progress {
-    border-left: 4px solid #f59e0b;
-  }
-
-  .achievement-card.locked {
-    border-left: 4px solid #d1d5db;
-    opacity: 0.7;
-  }
-
-  .achievement-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
-
-  .achievement-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-
-  .achievement-icon.completed {
-    background: #d1fae5;
-    color: #065f46;
-  }
-
-  .achievement-icon.in-progress {
-    background: #fef3c7;
-    color: #d97706;
-  }
-
-  .achievement-icon.locked {
-    background: #f3f4f6;
-    color: #6b7280;
-  }
-
-  .achievement-content {
-    flex: 1;
-    margin-left: 15px;
-  }
-
-  .achievement-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #111827;
-    margin-bottom: 4px;
-  }
-
-  .achievement-description {
-    font-size: 14px;
-    color: #6b7280;
-    line-height: 1.4;
-  }
-
-  .achievement-badge {
-    background: #eff6ff;
-    color: #1e40af;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 500;
-  }
-
-  .achievement-progress {
-    margin-top: 12px;
-  }
-
-  .progress-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
-    font-size: 12px;
-    color: #6b7280;
-  }
-
-  .progress-bar {
-    height: 6px;
-    background: #e5e7eb;
-    border-radius: 3px;
-    overflow: hidden;
-  }
-
-  .progress-fill {
-    height: 100%;
-    border-radius: 3px;
-    transition: width 0.3s ease;
-  }
-
-  .progress-fill.completed {
-    background: #10b981;
-  }
-
-  .progress-fill.in-progress {
-    background: #f59e0b;
-  }
-
-  .achievement-reward {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid #f3f4f6;
-  }
-
-  .reward-text {
-    font-size: 12px;
-    color: #6b7280;
-  }
-
-  .reward-badge {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: white;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 11px;
-    font-weight: 500;
-  }
-
   .stats-overview {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    margin-bottom: 25px;
+    gap: 20px;
   }
 
   .stat-card {
     background: white;
     border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 20px;
+    border-radius: 12px;
+    padding: 30px;
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   }
 
   .stat-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 8px;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 12px;
-    font-size: 20px;
+    margin: 0 auto 15px;
+    font-size: 24px;
   }
 
   .stat-icon.donations {
-    background: #dbeafe;
-    color: #1e40af;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
   }
 
   .stat-icon.impact {
-    background: #d1fae5;
-    color: #065f46;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
   }
 
   .stat-icon.rating {
-    background: #fef3c7;
-    color: #d97706;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
   }
 
   .stat-value {
-    font-size: 28px;
+    font-size: 36px;
     font-weight: 700;
     color: #111827;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
   }
 
   .stat-label {
-    font-size: 14px;
+    font-size: 16px;
     color: #6b7280;
     font-weight: 500;
+  }
+
+  /* Cards for Help */
+  .card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.2s;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+  }
+
+  .card h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card p {
+    font-size: 14px;
+    color: #4b5563;
+    margin: 6px 0;
+  }
+
+  /* Notification System */
+  .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 16px 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-left: 4px solid #10b981;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 350px;
+    z-index: 1000;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+
+  .notification.show {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  .notification.success {
+    border-left-color: #10b981;
+  }
+
+  .notification-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    background: #10b981;
+  }
+
+  .notification-content {
+    flex: 1;
+  }
+
+  .notification-title {
+    font-weight: 600;
+    color: #111827;
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+
+  .notification-message {
+    color: #6b7280;
+    font-size: 13px;
   }
 
   /* Responsive */
@@ -323,15 +503,14 @@
     .menu-header { display: none; }
     .menu-item { display: inline-flex; width: auto; margin: 4px 8px; }
     .content-area { padding: 20px; }
-    .stats-overview {
-      grid-template-columns: 1fr;
-    }
-    .achievement-header {
-      flex-direction: column;
-      gap: 10px;
-    }
-    .achievement-content {
-      margin-left: 0;
+    .profile-header { flex-direction: column; align-items: center; text-align: center; }
+    .profile-details { grid-template-columns: 1fr; }
+    .profile-stats { grid-template-columns: repeat(2, 1fr); }
+    .stats-overview { grid-template-columns: 1fr; }
+    .notification {
+      left: 20px;
+      right: 20px;
+      max-width: none;
     }
   }
 </style>
@@ -349,6 +528,140 @@
 
   <!-- Content Area -->
   <div class="content-area">
+    <!-- Profile Section -->
+    <section id="profile" class="section active">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4" alt="Restaurant Logo">
+            <button class="profile-avatar-edit" title="Change Logo">
+              <i class="fas fa-camera"></i>
+            </button>
+          </div>
+          <div class="profile-info">
+            <h2 id="profileName">Happy Bites</h2>
+            <span class="restaurant-type" id="profileType">Vegetarian Restaurant</span>
+            <p id="profileAddress">123, Main Street, City</p>
+            <p id="profileEmail">contact@happybites.com</p>
+          </div>
+        </div>
+
+        <div class="profile-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="totalDonations">47</div>
+            <div class="stat-label">Total Donations</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="activePosts">3</div>
+            <div class="stat-label">Active Posts</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="peopleHelped">156</div>
+            <div class="stat-label">People Helped</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="rating">4.8</div>
+            <div class="stat-label">Volunteer Rating</div>
+          </div>
+        </div>
+
+        <div class="profile-details">
+          <div class="detail-item">
+            <i class="fas fa-phone"></i>
+            <div class="detail-content">
+              <strong>Phone</strong>
+              <span id="profilePhone">+91 9876543210</span>
+            </div>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-envelope"></i>
+            <div class="detail-content">
+              <strong>Email</strong>
+              <span id="profileEmailDetail">contact@happybites.com</span>
+            </div>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div class="detail-content">
+              <strong>Address</strong>
+              <span id="profileAddressDetail">123, Main Street, City, State - 560001</span>
+            </div>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-clock"></i>
+            <div class="detail-content">
+              <strong>Donation Status</strong>
+              <span id="profileStatus">🟢 Available for Donations</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Update Info Section -->
+    <section id="update" class="section">
+      <div class="form-container">
+        <h2><i class="fas fa-edit"></i> Update Restaurant Information</h2>
+        <div class="form-group">
+          <label for="restaurantName"><i class="fas fa-store"></i> Restaurant Name</label>
+          <input type="text" id="restaurantName" placeholder="Enter restaurant name">
+        </div>
+        <div class="form-group">
+          <label for="restaurantType"><i class="fas fa-utensils"></i> Restaurant Type</label>
+          <select id="restaurantType">
+            <option value="vegetarian">Vegetarian</option>
+            <option value="non-vegetarian">Non-Vegetarian</option>
+            <option value="vegan">Vegan</option>
+            <option value="bakery">Bakery</option>
+            <option value="cafe">Cafe</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="restaurantEmail"><i class="fas fa-envelope"></i> Email</label>
+          <input type="email" id="restaurantEmail" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+          <label for="restaurantPhone"><i class="fas fa-phone"></i> Phone</label>
+          <input type="text" id="restaurantPhone" placeholder="Enter phone number">
+        </div>
+        <div class="form-group">
+          <label for="restaurantAddress"><i class="fas fa-map-marker-alt"></i> Address</label>
+          <textarea id="restaurantAddress" placeholder="Enter complete address" rows="3"></textarea>
+        </div>
+        <button class="btn-primary" id="saveProfileBtn">
+          <i class="fas fa-save"></i> Save Changes
+        </button>
+        <button class="btn-secondary" id="cancelProfileBtn">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+      </div>
+    </section>
+
+    <!-- Donation Status Section -->
+    <section id="business" class="section">
+      <div class="form-container">
+        <h2><i class="fas fa-clock"></i> Donation Status</h2>
+        <div class="current-status status-available" id="currentStatus">
+          <strong>Current Status:</strong> 🟢 Available for food donations
+        </div>
+        <div class="form-group">
+          <label for="statusSelect"><i class="fas fa-toggle-on"></i> Update Availability</label>
+          <select id="statusSelect">
+            <option value="Available">🟢 Available - Accepting donations</option>
+            <option value="Not Available">🔴 Not Available - Temporarily paused</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="statusMessage"><i class="fas fa-comment"></i> Status Message (Optional)</label>
+          <textarea id="statusMessage" placeholder="Add a custom message for volunteers..." rows="2"></textarea>
+        </div>
+        <button class="btn-primary" id="saveStatusBtn">
+          <i class="fas fa-check"></i> Update Status
+        </button>
+      </div>
+    </section>
+
     <!-- Achievements Section -->
     <section id="achievements" class="section">
       <div class="achievements-container">
@@ -376,212 +689,41 @@
             <div class="stat-label">Volunteer Rating</div>
           </div>
         </div>
-
-        <!-- Donation Milestones -->
-        <div class="achievement-category">
-          <h3><i class="fas fa-flag"></i> Donation Milestones</h3>
-          <div class="achievements-grid">
-            <div class="achievement-card completed">
-              <div class="achievement-header">
-                <div class="achievement-icon completed">
-                  <i class="fas fa-check"></i>
-                </div>
-                <div class="achievement-content">
-                  <div class="achievement-title">First Donation</div>
-                  <div class="achievement-description">Successfully completed your first food donation</div>
-                </div>
-                <div class="achievement-badge">Completed</div>
-              </div>
-            </div>
-
-            <div class="achievement-card completed">
-              <div class="achievement-header">
-                <div class="achievement-icon completed">
-                  <i class="fas fa-utensils"></i>
-                </div>
-                <div class="achievement-content">
-                  <div class="achievement-title">50 Meals Donated</div>
-                  <div class="achievement-description">Reached 50 total meals donated to those in need</div>
-                </div>
-                <div class="achievement-badge">Completed</div>
-              </div>
-              <div class="achievement-progress">
-                <div class="progress-info">
-                  <span>50/50 meals</span>
-                  <span>100%</span>
-                </div>
-                <div class="progress-bar">
-                  <div class="progress-fill completed" style="width: 100%"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="achievement-card in-progress">
-              <div class="achievement-header">
-                <div class="achievement-icon in-progress">
-                  <i class="fas fa-utensil-spoon"></i>
-                </div>
-                <div class="achievement-content">
-                  <div class="achievement-title">100 Meals Donated</div>
-                  <div class="achievement-description">Help reach 100 meals donated to the community</div>
-                </div>
-                <div class="achievement-badge">In Progress</div>
-              </div>
-              <div class="achievement-progress">
-                <div class="progress-info">
-                  <span>47/100 meals</span>
-                  <span>47%</span>
-                </div>
-                <div class="progress-bar">
-                  <div class="progress-fill in-progress" style="width: 47%"></div>
-                </div>
-              </div>
-              <div class="achievement-reward">
-                <span class="reward-text">Reward:</span>
-                <span class="reward-badge">Gold Badge</span>
-              </div>
-            </div>
-
-            <div class="achievement-card locked">
-              <div class="achievement-header">
-                <div class="achievement-icon locked">
-                  <i class="fas fa-crown"></i>
-                </div>
-                <div class="achievement-content">
-                  <div class="achievement-title">500 Meals Donated</div>
-                  <div class="achievement-description">Become a FoodShare Hero with 500 meals donated</div>
-                </div>
-                <div class="achievement-badge">Locked</div>
-              </div>
-              <div class="achievement-progress">
-                <div class="progress-info">
-                  <span>47/500 meals</span>
-                  <span>9%</span>
-                </div>
-                <div class="progress-bar">
-                  <div class="progress-fill in-progress" style="width: 9%"></div>
-                </div>
-              </div>
-              <div class="achievement-reward">
-                <span class="reward-text">Reward:</span>
-                <span class="reward-badge">Hero Status</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Community Impact -->
-        <div class="achievement-category">
-          <h3><i class="fas fa-hand-holding-heart"></i> Community Impact</h3>
-          <div class="achievements-grid">
-            <div class="achievement-card completed">
-              <div class="achievement-header">
-                <div class="achievement-icon completed">
-                  <i class="fas fa-home"></i>
-                </div>
-                <div class="achievement-content">
-                  <div class="achievement-title">Shelter Support</div>
-                  <div class="achievement-description">Donated to at least 3 different shelters</div>
-                </div>
-                <div class="achievement-badge">Completed</div>
-              </div>
-            </div>
-
-            <div class="achievement-card in-progress">
-              <div class="achievement-header">
-                <div class="achievement-icon in-progress">
-                  <i class="fas fa-calendar"></i>
-                </div>
-                <div class="achievement-content">
-                  <div class="achievement-title">Weekly Contributor</div>
-                  <div class="achievement-description">Donate consistently for 4 consecutive weeks</div>
-                </div>
-                <div class="achievement-badge">2/4 weeks</div>
-              </div>
-              <div class="achievement-progress">
-                <div class="progress-info">
-                  <span>2/4 weeks</span>
-                  <span>50%</span>
-                </div>
-                <div class="progress-bar">
-                  <div class="progress-fill in-progress" style="width: 50%"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quality & Recognition -->
-        <div class="achievement-category">
-          <h3><i class="fas fa-award"></i> Quality & Recognition</h3>
-          <div class="achievements-grid">
-            <div class="achievement-card completed">
-              <div class="achievement-header">
-                <div class="achievement-icon completed">
-                  <i class="fas fa-shield-alt"></i>
-                </div>
-                <div class="achievement-content">
-                  <div class="achievement-title">Hygiene Excellence</div>
-                  <div class="achievement-description">Maintain 5-star hygiene rating for 30 days</div>
-                </div>
-                <div class="achievement-badge">Completed</div>
-              </div>
-            </div>
-
-            <div class="achievement-card completed">
-              <div class="achievement-header">
-                <div class="achievement-icon completed">
-                  <i class="fas fa-star"></i>
-                </div>
-                <div class="achievement-content">
-                  <div class="achievement-title">Top Rated</div>
-                  <div class="achievement-description">Receive 10+ positive volunteer reviews</div>
-                </div>
-                <div class="achievement-badge">Completed</div>
-              </div>
-            </div>
-
-            <div class="achievement-card in-progress">
-              <div class="achievement-header">
-                <div class="achievement-icon in-progress">
-                  <i class="fas fa-bolt"></i>
-                </div>
-                <div class="achievement-content">
-                  <div class="achievement-title">Quick Responder</div>
-                  <div class="achievement-description">Respond to volunteer messages within 30 minutes</div>
-                </div>
-                <div class="achievement-badge">In Progress</div>
-              </div>
-              <div class="achievement-progress">
-                <div class="progress-info">
-                  <span>15/20 responses</span>
-                  <span>75%</span>
-                </div>
-                <div class="progress-bar">
-                  <div class="progress-fill in-progress" style="width: 75%"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
-    <!-- Other sections remain the same -->
-    <section id="profile" class="section">
-      <!-- Profile content -->
-    </section>
-
-    <section id="update" class="section">
-      <!-- Update Info content -->
-    </section>
-
-    <section id="business" class="section">
-      <!-- Donation Status content -->
-    </section>
-
+    <!-- Help / Guidelines Section -->
     <section id="help" class="section">
-      <!-- Help content -->
+      <div class="form-container">
+        <h2><i class="fas fa-question-circle"></i> Help & Guidelines</h2>
+        
+        <div class="card">
+          <h3><i class="fas fa-check-circle"></i> Best Practices</h3>
+          <p>✅ Ensure food is fresh and safely packed in hygienic containers</p>
+          <p>✅ Label items clearly with quantity, type, and preparation date</p>
+          <p>✅ Coordinate pickups with volunteers at least 2 hours in advance</p>
+          <p>✅ Keep contact information updated for emergency notifications</p>
+          <p>✅ Follow food safety guidelines and maintain proper temperatures</p>
+        </div>
+
+        <div class="card">
+          <h3><i class="fas fa-exclamation-triangle"></i> Important Notes</h3>
+          <p>⏰ Update your donation status when you're not available</p>
+          <p>📞 Respond promptly to volunteer messages and calls</p>
+          <p>🔄 Regular updates help maintain your restaurant's rating</p>
+          <p>🌟 Achievements unlock special recognition in the community</p>
+        </div>
+
+        <div class="card">
+          <h3><i class="fas fa-headset"></i> Support</h3>
+          <p>📧 Email: support@foodshare.com</p>
+          <p>📞 Helpline: +1-800-FOOD-AID</p>
+          <p>🕒 Available: 24/7 for urgent matters</p>
+          <button class="btn-primary" style="margin-top: 10px;">
+            <i class="fas fa-comment"></i> Contact Support
+          </button>
+        </div>
+      </div>
     </section>
   </div>
 </div>
@@ -589,10 +731,60 @@
 <script>
   // Global initialization function for profile page
   window.initProfilePage = function() {
-    console.log('Initializing Profile Page...');
+    console.log('Initializing Enhanced Profile Page...');
     
     // Get data from parent window
     const userData = window.parent.appData.userData;
+
+    // Notification System
+    function showNotification(type, title, message) {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      
+      notification.innerHTML = `
+        <div class="notification-icon">
+          <i class="fas fa-${type === 'success' ? 'check' : 'info-circle'}"></i>
+        </div>
+        <div class="notification-content">
+          <div class="notification-title">${title}</div>
+          <div class="notification-message">${message}</div>
+        </div>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => notification.classList.add('show'), 100);
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+      }, 4000);
+    }
+
+    // Load profile data
+    function loadProfileData() {
+      document.getElementById('profileName').textContent = userData.name;
+      document.getElementById('profileType').textContent = userData.type;
+      document.getElementById('profileAddress').textContent = userData.address;
+      document.getElementById('profileEmail').textContent = userData.email;
+      document.getElementById('profilePhone').textContent = userData.phone;
+      document.getElementById('profileEmailDetail').textContent = userData.email;
+      document.getElementById('profileAddressDetail').textContent = userData.address;
+      document.getElementById('profileStatus').textContent = userData.donationStatus === 'Available' ? '🟢 Available for Donations' : '🔴 Not Available';
+      
+      document.getElementById('restaurantName').value = userData.name;
+      document.getElementById('restaurantType').value = userData.type.toLowerCase();
+      document.getElementById('restaurantEmail').value = userData.email;
+      document.getElementById('restaurantPhone').value = userData.phone;
+      document.getElementById('restaurantAddress').value = userData.address;
+      
+      const statusClass = userData.donationStatus === 'Available' ? 'status-available' : 'status-unavailable';
+      const statusEmoji = userData.donationStatus === 'Available' ? '🟢' : '🔴';
+      const statusText = userData.donationStatus === 'Available' ? 'Available for food donations' : 'Temporarily not accepting donations';
+      
+      document.getElementById('currentStatus').className = `current-status ${statusClass}`;
+      document.getElementById('currentStatus').innerHTML = `<strong>Current Status:</strong> ${statusEmoji} ${statusText}`;
+      document.getElementById('statusSelect').value = userData.donationStatus;
+    }
 
     // Tab Switching with event delegation
     const sidebar = document.querySelector('.sidebar');
@@ -613,44 +805,89 @@
       });
     }
 
-    // Load profile data
-    function loadProfileData() {
-      // Your existing profile data loading logic
+    // Save Profile Changes
+    const saveProfileBtn = document.getElementById('saveProfileBtn');
+    if (saveProfileBtn) {
+      saveProfileBtn.addEventListener('click', function() {
+        userData.name = document.getElementById('restaurantName').value;
+        userData.type = document.getElementById('restaurantType').value;
+        userData.email = document.getElementById('restaurantEmail').value;
+        userData.phone = document.getElementById('restaurantPhone').value;
+        userData.address = document.getElementById('restaurantAddress').value;
+        
+        showNotification('success', 'Profile Updated', 'Your restaurant information has been successfully updated.');
+        loadProfileData();
+        
+        // Switch to profile view
+        const menuItems = document.querySelectorAll('.menu-item');
+        const sections = document.querySelectorAll('.section');
+        menuItems.forEach(i => i.classList.remove('active'));
+        menuItems[0].classList.add('active');
+        sections.forEach(section => section.classList.remove('active'));
+        document.getElementById('profile').classList.add('active');
+      });
     }
 
-    // Initialize achievements with dynamic progress
-    function initializeAchievements() {
-      // Update progress bars based on current data
-      const totalDonations = 47; // This would come from your data
-      const hundredMealsProgress = (totalDonations / 100) * 100;
-      const fiveHundredMealsProgress = (totalDonations / 500) * 100;
-      
-      // Update progress bars
-      const hundredMealsBar = document.querySelector('.achievement-card.in-progress .progress-fill');
-      const fiveHundredMealsBar = document.querySelector('.achievement-card.locked .progress-fill');
-      
-      if (hundredMealsBar) {
-        hundredMealsBar.style.width = `${hundredMealsProgress}%`;
-      }
-      if (fiveHundredMealsBar) {
-        fiveHundredMealsBar.style.width = `${fiveHundredMealsProgress}%`;
-      }
-      
-      // Update progress text
-      const progressTexts = document.querySelectorAll('.progress-info span:first-child');
-      progressTexts.forEach(text => {
-        if (text.textContent.includes('47/100')) {
-          text.textContent = `${totalDonations}/100 meals`;
-        }
-        if (text.textContent.includes('47/500')) {
-          text.textContent = `${totalDonations}/500 meals`;
-        }
+    // Cancel button
+    const cancelProfileBtn = document.getElementById('cancelProfileBtn');
+    if (cancelProfileBtn) {
+      cancelProfileBtn.addEventListener('click', function() {
+        loadProfileData();
+        const menuItems = document.querySelectorAll('.menu-item');
+        const sections = document.querySelectorAll('.section');
+        menuItems.forEach(i => i.classList.remove('active'));
+        menuItems[0].classList.add('active');
+        sections.forEach(section => section.classList.remove('active'));
+        document.getElementById('profile').classList.add('active');
+      });
+    }
+
+    // Status change handler
+    const statusSelect = document.getElementById('statusSelect');
+    if (statusSelect) {
+      statusSelect.addEventListener('change', function() {
+        const status = this.value;
+        const statusClass = status === 'Available' ? 'status-available' : 'status-unavailable';
+        const statusEmoji = status === 'Available' ? '🟢' : '🔴';
+        const statusText = status === 'Available' ? 'Available for food donations' : 'Temporarily not accepting donations';
+        
+        document.getElementById('currentStatus').className = `current-status ${statusClass}`;
+        document.getElementById('currentStatus').innerHTML = `<strong>Current Status:</strong> ${statusEmoji} ${statusText}`;
+      });
+    }
+
+    // Save donation status
+    const saveStatusBtn = document.getElementById('saveStatusBtn');
+    if (saveStatusBtn) {
+      saveStatusBtn.addEventListener('click', function() {
+        const status = document.getElementById('statusSelect').value;
+        const statusMessage = document.getElementById('statusMessage').value;
+        userData.donationStatus = status;
+        
+        showNotification('success', 'Status Updated', `Your donation availability has been set to ${status}. ${statusMessage ? 'Your message has been saved.' : ''}`);
+        
+        loadProfileData();
+      });
+    }
+
+    // Avatar edit functionality
+    const avatarEditBtn = document.querySelector('.profile-avatar-edit');
+    if (avatarEditBtn) {
+      avatarEditBtn.addEventListener('click', function() {
+        showNotification('info', 'Feature Coming Soon', 'Logo upload functionality will be available in the next update.');
+      });
+    }
+
+    // Contact support button
+    const contactSupportBtn = document.querySelector('.btn-primary[style*="margin-top: 10px"]');
+    if (contactSupportBtn) {
+      contactSupportBtn.addEventListener('click', function() {
+        showNotification('info', 'Support Contact', 'Our support team will reach out to you shortly. Thank you for your patience.');
       });
     }
 
     // Load data when page initializes
     loadProfileData();
-    initializeAchievements();
   };
 
   // Initialize immediately if script loads after DOM is ready
