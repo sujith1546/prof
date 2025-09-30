@@ -13,10 +13,7 @@
     height: 100vh;
     transition: opacity 1s ease;
   }
-  .container {
-    display: flex;
-    flex: 1;
-  }
+  .container { display: flex; flex: 1; }
   .left {
     flex: 1;
     background-color: #f2f2f2;
@@ -36,37 +33,16 @@
     text-align: center;
   }
   h2 { margin-bottom: 20px; }
-  input, select { 
-    width: 100%; 
-    padding: 10px; 
-    margin: 10px 0; 
-    box-sizing: border-box;
-  }
+  input, select { width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
   .buttonContainer { display: flex; gap: 10px; margin-top: 10px; }
-  button {
-    flex: 1;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    color: white;
-    transition: background-color 0.3s ease;
-  }
+  button { flex: 1; padding: 10px 20px; border: none; cursor: pointer; color: white; transition: background-color 0.3s ease; }
   button[type="submit"] { background-color: #007bff; }
   button[type="submit"]:hover { background-color: #0056b3; }
   button[type="button"] { background-color: #ff0000; }
   button[type="button"]:hover { background-color: #cc0000; }
 
-  /* Success/Message animation */
-  .message {
-    margin-top: 20px;
-    font-weight: bold;
-    opacity: 1;
-    transition: opacity 1s ease, transform 1s ease;
-  }
-  .message.animate {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
+  .message { margin-top: 20px; font-weight: bold; opacity: 1; transition: opacity 1s ease, transform 1s ease; }
+  .message.animate { opacity: 0; transform: translateY(-20px); }
 </style>
 </head>
 <body>
@@ -83,8 +59,20 @@
         <option value="donor">Donor</option>
       </select>
 
-      <label for="gmail">Gmail</label>
-      <input type="email" id="gmail" placeholder="Enter your Gmail" required>
+      <label for="loginMethod">Login By</label>
+      <select id="loginMethod" required>
+        <option value="gmail">Gmail</option>
+        <option value="username">Username</option>
+      </select>
+
+      <div id="gmailField">
+        <label for="gmail">Gmail</label>
+        <input type="email" id="gmail" placeholder="Enter your Gmail">
+      </div>
+      <div id="usernameField" style="display:none;">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter your Username">
+      </div>
 
       <label for="password">Password</label>
       <input type="password" id="password" placeholder="Enter your password" required>
@@ -103,96 +91,114 @@
 </div>
 
 <script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-  const supabaseUrl = 'https://xqzdvxyefnhekxaujivq.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxemR2eHllZm5oZWt4YXVqaXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyMTc1MjksImV4cCI6MjA3Mzc5MzUyOX0.RR4VMAQ6CikKyELyY_tSAlfspX5i65fpAEaEbBqF9co';
-  const supabase = createClient(supabaseUrl, supabaseKey);
+const supabaseUrl = 'https://xqzdvxyefnhekxaujivq.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxemR2eHllZm5oZWt4YXVqaXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyMTc1MjksImV4cCI6MjA3Mzc5MzUyOX0.RR4VMAQ6CikKyELyY_tSAlfspX5i65fpAEaEbBqF9co';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-  const loginForm = document.getElementById('loginForm');
-  const loginMsg = document.getElementById('loginMsg');
-  const goBackBtn = document.getElementById('goBackBtn');
+const loginForm = document.getElementById('loginForm');
+const loginMsg = document.getElementById('loginMsg');
+const goBackBtn = document.getElementById('goBackBtn');
+const loginMethod = document.getElementById('loginMethod');
+const gmailField = document.getElementById('gmailField');
+const usernameField = document.getElementById('usernameField');
 
-  // Function to determine redirect URL based on account type
-  function getDashboardUrl(accountType) {
-    switch(accountType) {
-      case 'restaurant':
-        return 'resdashboard.html';
-      case 'ngo':
-        return 'ngodashboard.html';
-      case 'donor':
-        return 'dondashboard.html';
-      default:
-        return 'dashboard.html'; // Fallback
-    }
+loginMethod.addEventListener('change', () => {
+  if (loginMethod.value === 'gmail') {
+    gmailField.style.display = '';
+    usernameField.style.display = 'none';
+    document.getElementById('gmail').required = true;
+    document.getElementById('username').required = false;
+  } else {
+    gmailField.style.display = 'none';
+    usernameField.style.display = '';
+    document.getElementById('gmail').required = false;
+    document.getElementById('username').required = true;
+  }
+});
+
+function getDashboardUrl(accountType) {
+  switch(accountType) {
+    case 'restaurant': return 'resdashboard.html';
+    case 'ngo': return 'ngodashboard.html';
+    case 'donor': return 'dondashboard.html';
+    default: return 'dashboard.html';
+  }
+}
+
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const accountType = document.getElementById('accountType').value;
+  const method = loginMethod.value;
+  const gmail = document.getElementById('gmail').value;
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  if (!accountType) {
+    loginMsg.textContent = "Please select an account type";
+    loginMsg.style.color = 'red';
+    return;
   }
 
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const accountType = document.getElementById('accountType').value;
-    const gmail = document.getElementById('gmail').value;
-    const password = document.getElementById('password').value;
-
-    // Validate account type selection
-    if (!accountType) {
-      loginMsg.textContent = "Please select an account type";
-      loginMsg.style.color = 'red';
-      return;
-    }
-
-    // Fetch user by Gmail and account type (checking the "type" column)
-    const { data: users, error } = await supabase
+  let users, error;
+  if (method === 'gmail') {
+    ({ data: users, error } = await supabase
       .from('users')
       .select('*')
       .eq('gmail', gmail)
-      .eq('type', accountType);
+      .eq('type', accountType));
+  } else {
+    ({ data: users, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('username', username)
+      .eq('type', accountType));
+  }
 
-    if (error) {
-      loginMsg.textContent = `Error: ${error.message}`;
-      loginMsg.style.color = 'red';
-      return;
-    }
+  if (error) {
+    loginMsg.textContent = `Error: ${error.message}`;
+    loginMsg.style.color = 'red';
+    return;
+  }
 
-    if (users.length === 0) {
-      loginMsg.textContent = "Account does not exist for this email and account type!";
-      loginMsg.style.color = 'red';
+  if (!users || users.length === 0) {
+    loginMsg.textContent = "Account does not exist!";
+    loginMsg.style.color = 'red';
+  } else {
+    const user = users[0];
+    if (user.password === password) {
+      loginMsg.textContent = "Login successful! Redirecting...";
+      loginMsg.style.color = 'green';
+
+      // Save current user info to localStorage
+      localStorage.setItem('currentUser', JSON.stringify(user));
+
+      setTimeout(() => {
+        window.location.href = getDashboardUrl(accountType);
+      }, 1500);
     } else {
-      const user = users[0];
-      if (user.password === password) {
-        loginMsg.textContent = `Login successful! Redirecting to ${accountType} dashboard...`;
-        loginMsg.style.color = 'green';
-
-        // Save user's email and account type for dashboard
-        localStorage.setItem('currentUserEmail', user.gmail);
-        localStorage.setItem('currentUserAccountType', user.type);
-
-        // Animate message
-        loginMsg.classList.add('animate');
-
-        // Determine redirect URL based on account type
-        const redirectUrl = getDashboardUrl(accountType);
-        
-        // Redirect after animation
-        setTimeout(() => { window.location.href = redirectUrl; }, 2000);
-      } else {
-        loginMsg.textContent = "Incorrect password. Please check your details.";
-        loginMsg.style.color = 'red';
-      }
+      loginMsg.textContent = "Incorrect password.";
+      loginMsg.style.color = 'red';
     }
-  });
+  }
+});
 
-  goBackBtn.addEventListener('click', () => {
-    // Fade out page
-    document.body.style.opacity = '0';
-    setTimeout(() => { window.location.href = 'index.html'; }, 800);
-  });
+goBackBtn.addEventListener('click', () => {
+  document.body.style.opacity = '0';
+  setTimeout(() => { window.location.href = 'index.html'; }, 500);
+});
 
-  window.onload = () => {
-    loginForm.reset();
-    loginMsg.textContent = '';
-    document.body.style.opacity = '1';
-  };
+window.onload = () => {
+  loginForm.reset();
+  loginMsg.textContent = '';
+  document.body.style.opacity = '1';
+  gmailField.style.display = '';
+  usernameField.style.display = 'none';
+  document.getElementById('gmail').required = true;
+  document.getElementById('username').required = false;
+};
 </script>
 
 </body>
