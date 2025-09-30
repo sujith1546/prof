@@ -1,0 +1,662 @@
+<!-- Profile Page Content (without HTML wrapper) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  .dashboard-container {
+    display: flex;
+    min-height: calc(100vh - 120px);
+    gap: 0;
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 260px;
+    background-color: #ffffff;
+    border-right: 1px solid #e0e0e0;
+    padding: 20px 0;
+  }
+
+  .menu-header {
+    padding: 0 20px 15px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 10px;
+  }
+
+  .menu-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+  }
+
+  .menu-item {
+    padding: 12px 20px;
+    margin: 4px 12px;
+    background-color: transparent;
+    color: #374151;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: calc(100% - 24px);
+    text-align: left;
+  }
+
+  .menu-item i {
+    width: 20px;
+    text-align: center;
+    font-size: 16px;
+  }
+
+  .menu-item.active,
+  .menu-item:hover {
+    background-color: #2563eb;
+    color: #ffffff;
+  }
+
+  /* Content Area */
+  .content-area {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+    background-color: #ffffff;
+  }
+
+  .section {
+    display: none;
+    max-width: 900px;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section.active {
+    display: block;
+  }
+
+  /* Achievements Section - Clean Design */
+  .achievements-container {
+    display: grid;
+    gap: 20px;
+  }
+
+  .achievement-category {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 25px;
+    border: 1px solid #e5e7eb;
+  }
+
+  .achievement-category h3 {
+    font-size: 18px;
+    color: #111827;
+    margin: 0 0 20px 0;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .achievement-category h3 i {
+    color: #2563eb;
+  }
+
+  .achievements-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .achievement-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .achievement-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .achievement-card.completed {
+    border-left: 4px solid #10b981;
+  }
+
+  .achievement-card.in-progress {
+    border-left: 4px solid #f59e0b;
+  }
+
+  .achievement-card.locked {
+    border-left: 4px solid #d1d5db;
+    opacity: 0.7;
+  }
+
+  .achievement-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .achievement-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .achievement-icon.completed {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .achievement-icon.in-progress {
+    background: #fef3c7;
+    color: #d97706;
+  }
+
+  .achievement-icon.locked {
+    background: #f3f4f6;
+    color: #6b7280;
+  }
+
+  .achievement-content {
+    flex: 1;
+    margin-left: 15px;
+  }
+
+  .achievement-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 4px;
+  }
+
+  .achievement-description {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.4;
+  }
+
+  .achievement-badge {
+    background: #eff6ff;
+    color: #1e40af;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .achievement-progress {
+    margin-top: 12px;
+  }
+
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  .progress-bar {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+
+  .progress-fill.completed {
+    background: #10b981;
+  }
+
+  .progress-fill.in-progress {
+    background: #f59e0b;
+  }
+
+  .achievement-reward {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f3f4f6;
+  }
+
+  .reward-text {
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  .reward-badge {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .stats-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 25px;
+  }
+
+  .stat-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 20px;
+  }
+
+  .stat-icon.donations {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .stat-icon.impact {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .stat-icon.rating {
+    background: #fef3c7;
+    color: #d97706;
+  }
+
+  .stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 500;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .dashboard-container { flex-direction: column; }
+    .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #e0e0e0; padding: 10px 0; }
+    .menu-header { display: none; }
+    .menu-item { display: inline-flex; width: auto; margin: 4px 8px; }
+    .content-area { padding: 20px; }
+    .stats-overview {
+      grid-template-columns: 1fr;
+    }
+    .achievement-header {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .achievement-content {
+      margin-left: 0;
+    }
+  }
+</style>
+
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="menu-header"><h3>Restaurant Account</h3></div>
+    <button class="menu-item active" data-section="profile"><i class="fas fa-store"></i> Profile</button>
+    <button class="menu-item" data-section="update"><i class="fas fa-edit"></i> Update Info</button>
+    <button class="menu-item" data-section="business"><i class="fas fa-clock"></i> Donation Status</button>
+    <button class="menu-item" data-section="achievements"><i class="fas fa-trophy"></i> Achievements</button>
+    <button class="menu-item" data-section="help"><i class="fas fa-question-circle"></i> Help / Guidelines</button>
+  </aside>
+
+  <!-- Content Area -->
+  <div class="content-area">
+    <!-- Achievements Section -->
+    <section id="achievements" class="section">
+      <div class="achievements-container">
+        <!-- Stats Overview -->
+        <div class="stats-overview">
+          <div class="stat-card">
+            <div class="stat-icon donations">
+              <i class="fas fa-utensils"></i>
+            </div>
+            <div class="stat-value">47</div>
+            <div class="stat-label">Total Donations</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon impact">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-value">156</div>
+            <div class="stat-label">People Helped</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon rating">
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-value">4.8</div>
+            <div class="stat-label">Volunteer Rating</div>
+          </div>
+        </div>
+
+        <!-- Donation Milestones -->
+        <div class="achievement-category">
+          <h3><i class="fas fa-flag"></i> Donation Milestones</h3>
+          <div class="achievements-grid">
+            <div class="achievement-card completed">
+              <div class="achievement-header">
+                <div class="achievement-icon completed">
+                  <i class="fas fa-check"></i>
+                </div>
+                <div class="achievement-content">
+                  <div class="achievement-title">First Donation</div>
+                  <div class="achievement-description">Successfully completed your first food donation</div>
+                </div>
+                <div class="achievement-badge">Completed</div>
+              </div>
+            </div>
+
+            <div class="achievement-card completed">
+              <div class="achievement-header">
+                <div class="achievement-icon completed">
+                  <i class="fas fa-utensils"></i>
+                </div>
+                <div class="achievement-content">
+                  <div class="achievement-title">50 Meals Donated</div>
+                  <div class="achievement-description">Reached 50 total meals donated to those in need</div>
+                </div>
+                <div class="achievement-badge">Completed</div>
+              </div>
+              <div class="achievement-progress">
+                <div class="progress-info">
+                  <span>50/50 meals</span>
+                  <span>100%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill completed" style="width: 100%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="achievement-card in-progress">
+              <div class="achievement-header">
+                <div class="achievement-icon in-progress">
+                  <i class="fas fa-utensil-spoon"></i>
+                </div>
+                <div class="achievement-content">
+                  <div class="achievement-title">100 Meals Donated</div>
+                  <div class="achievement-description">Help reach 100 meals donated to the community</div>
+                </div>
+                <div class="achievement-badge">In Progress</div>
+              </div>
+              <div class="achievement-progress">
+                <div class="progress-info">
+                  <span>47/100 meals</span>
+                  <span>47%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill in-progress" style="width: 47%"></div>
+                </div>
+              </div>
+              <div class="achievement-reward">
+                <span class="reward-text">Reward:</span>
+                <span class="reward-badge">Gold Badge</span>
+              </div>
+            </div>
+
+            <div class="achievement-card locked">
+              <div class="achievement-header">
+                <div class="achievement-icon locked">
+                  <i class="fas fa-crown"></i>
+                </div>
+                <div class="achievement-content">
+                  <div class="achievement-title">500 Meals Donated</div>
+                  <div class="achievement-description">Become a FoodShare Hero with 500 meals donated</div>
+                </div>
+                <div class="achievement-badge">Locked</div>
+              </div>
+              <div class="achievement-progress">
+                <div class="progress-info">
+                  <span>47/500 meals</span>
+                  <span>9%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill in-progress" style="width: 9%"></div>
+                </div>
+              </div>
+              <div class="achievement-reward">
+                <span class="reward-text">Reward:</span>
+                <span class="reward-badge">Hero Status</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Community Impact -->
+        <div class="achievement-category">
+          <h3><i class="fas fa-hand-holding-heart"></i> Community Impact</h3>
+          <div class="achievements-grid">
+            <div class="achievement-card completed">
+              <div class="achievement-header">
+                <div class="achievement-icon completed">
+                  <i class="fas fa-home"></i>
+                </div>
+                <div class="achievement-content">
+                  <div class="achievement-title">Shelter Support</div>
+                  <div class="achievement-description">Donated to at least 3 different shelters</div>
+                </div>
+                <div class="achievement-badge">Completed</div>
+              </div>
+            </div>
+
+            <div class="achievement-card in-progress">
+              <div class="achievement-header">
+                <div class="achievement-icon in-progress">
+                  <i class="fas fa-calendar"></i>
+                </div>
+                <div class="achievement-content">
+                  <div class="achievement-title">Weekly Contributor</div>
+                  <div class="achievement-description">Donate consistently for 4 consecutive weeks</div>
+                </div>
+                <div class="achievement-badge">2/4 weeks</div>
+              </div>
+              <div class="achievement-progress">
+                <div class="progress-info">
+                  <span>2/4 weeks</span>
+                  <span>50%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill in-progress" style="width: 50%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quality & Recognition -->
+        <div class="achievement-category">
+          <h3><i class="fas fa-award"></i> Quality & Recognition</h3>
+          <div class="achievements-grid">
+            <div class="achievement-card completed">
+              <div class="achievement-header">
+                <div class="achievement-icon completed">
+                  <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="achievement-content">
+                  <div class="achievement-title">Hygiene Excellence</div>
+                  <div class="achievement-description">Maintain 5-star hygiene rating for 30 days</div>
+                </div>
+                <div class="achievement-badge">Completed</div>
+              </div>
+            </div>
+
+            <div class="achievement-card completed">
+              <div class="achievement-header">
+                <div class="achievement-icon completed">
+                  <i class="fas fa-star"></i>
+                </div>
+                <div class="achievement-content">
+                  <div class="achievement-title">Top Rated</div>
+                  <div class="achievement-description">Receive 10+ positive volunteer reviews</div>
+                </div>
+                <div class="achievement-badge">Completed</div>
+              </div>
+            </div>
+
+            <div class="achievement-card in-progress">
+              <div class="achievement-header">
+                <div class="achievement-icon in-progress">
+                  <i class="fas fa-bolt"></i>
+                </div>
+                <div class="achievement-content">
+                  <div class="achievement-title">Quick Responder</div>
+                  <div class="achievement-description">Respond to volunteer messages within 30 minutes</div>
+                </div>
+                <div class="achievement-badge">In Progress</div>
+              </div>
+              <div class="achievement-progress">
+                <div class="progress-info">
+                  <span>15/20 responses</span>
+                  <span>75%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill in-progress" style="width: 75%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Other sections remain the same -->
+    <section id="profile" class="section">
+      <!-- Profile content -->
+    </section>
+
+    <section id="update" class="section">
+      <!-- Update Info content -->
+    </section>
+
+    <section id="business" class="section">
+      <!-- Donation Status content -->
+    </section>
+
+    <section id="help" class="section">
+      <!-- Help content -->
+    </section>
+  </div>
+</div>
+
+<script>
+  // Global initialization function for profile page
+  window.initProfilePage = function() {
+    console.log('Initializing Profile Page...');
+    
+    // Get data from parent window
+    const userData = window.parent.appData.userData;
+
+    // Tab Switching with event delegation
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar) {
+      sidebar.addEventListener('click', function(e) {
+        if (e.target.classList.contains('menu-item') || e.target.closest('.menu-item')) {
+          const menuItem = e.target.classList.contains('menu-item') ? e.target : e.target.closest('.menu-item');
+          const menuItems = document.querySelectorAll('.menu-item');
+          const sections = document.querySelectorAll('.section');
+          
+          menuItems.forEach(i => i.classList.remove('active'));
+          menuItem.classList.add('active');
+          
+          const target = menuItem.dataset.section;
+          sections.forEach(section => section.classList.remove('active'));
+          document.getElementById(target).classList.add('active');
+        }
+      });
+    }
+
+    // Load profile data
+    function loadProfileData() {
+      // Your existing profile data loading logic
+    }
+
+    // Initialize achievements with dynamic progress
+    function initializeAchievements() {
+      // Update progress bars based on current data
+      const totalDonations = 47; // This would come from your data
+      const hundredMealsProgress = (totalDonations / 100) * 100;
+      const fiveHundredMealsProgress = (totalDonations / 500) * 100;
+      
+      // Update progress bars
+      const hundredMealsBar = document.querySelector('.achievement-card.in-progress .progress-fill');
+      const fiveHundredMealsBar = document.querySelector('.achievement-card.locked .progress-fill');
+      
+      if (hundredMealsBar) {
+        hundredMealsBar.style.width = `${hundredMealsProgress}%`;
+      }
+      if (fiveHundredMealsBar) {
+        fiveHundredMealsBar.style.width = `${fiveHundredMealsProgress}%`;
+      }
+      
+      // Update progress text
+      const progressTexts = document.querySelectorAll('.progress-info span:first-child');
+      progressTexts.forEach(text => {
+        if (text.textContent.includes('47/100')) {
+          text.textContent = `${totalDonations}/100 meals`;
+        }
+        if (text.textContent.includes('47/500')) {
+          text.textContent = `${totalDonations}/500 meals`;
+        }
+      });
+    }
+
+    // Load data when page initializes
+    loadProfileData();
+    initializeAchievements();
+  };
+
+  // Initialize immediately if script loads after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', window.initProfilePage);
+  } else {
+    window.initProfilePage();
+  }
+</script>
