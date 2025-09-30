@@ -3,353 +3,274 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Restaurant Dashboard - Personal Finance Tracker</title>
-<!-- Add Font Awesome for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<title>Restaurant Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
   body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    height: 100vh;
-    transition: opacity 1s ease;
-    background-color: #f8f9fa;
-    display: flex;
-    flex-direction: column;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f9fafb;
   }
+
+  /* Header */
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    z-index: 10;
+    padding: 18px 40px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
+
   .welcome-section {
     display: flex;
     flex-direction: column;
   }
+
   .welcome {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 600;
-    color: #212529;
+    color: #111827;
     margin: 0;
   }
+
   .tagline {
-    font-size: 18px;
-    color: #495057;
-    margin-top: 4px;
-    letter-spacing: 1px;
-    font-weight: 500;
+    font-size: 14px;
+    color: #6b7280;
+    margin-top: 2px;
+    font-weight: 400;
   }
 
-  /* Menu Buttons */
   .menu-buttons {
     display: flex;
     gap: 12px;
-    margin-right: 24px;
   }
+
   .menu-btn {
-    padding: 10px 16px;
-    background: white;
-    color: #495057;
-    border: 1px solid #dee2e6;
+    padding: 8px 18px;
+    background-color: #f3f4f6;
+    color: #374151;
+    border: none;
     border-radius: 6px;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.25s ease;
-    white-space: nowrap;
-    font-size: 15px;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 14px;
   }
-  .menu-btn:hover {
-    background: #f1f8ff;
-    color: #007bff;
-    border-color: #007bff;
-  }
-  .menu-btn.active {
-    background: #e6f2ff;
-    color: #007bff;
-    border-color: #007bff;
-    box-shadow: 0 2px 4px rgba(0,123,255,0.15);
+
+  .menu-btn.active, .menu-btn:hover {
+    background-color: #2563eb;
+    color: #ffffff;
   }
 
   .logout-btn {
-    padding: 10px 20px;
-    background-color: #dc3545;
-    color: white;
+    padding: 8px 18px;
+    background-color: #ef4444;
+    color: #ffffff;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
     font-weight: 500;
-    font-size: 15px;
-  }
-  .logout-btn:hover {
-    background-color: #c82333;
+    font-size: 14px;
+    transition: background-color 0.2s;
   }
 
-  /* Main Content Area */
-  .main-content {
-    flex: 1;
+  .logout-btn:hover {
+    background-color: #b91c1c;
+  }
+
+  /* Content Area */
+  #contentArea {
     padding: 30px;
-    overflow-y: auto;
-    background: #f8f9fa;
+    max-width: 1400px;
+    margin: auto;
   }
-  .loading {
-    text-align: center;
-    padding: 40px;
-    color: #6c757d;
+
+  /* Logout overlay */
+  .logout-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f9fafb;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
   }
-  .loading i {
-    font-size: 48px;
-    margin-bottom: 16px;
-    color: #007bff;
-    opacity: 0.7;
+
+  .logout-overlay.show {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .logout-message {
+    font-size: 22px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 8px;
+  }
+
+  .logout-sub {
+    font-size: 16px;
+    color: #6b7280;
+  }
+
+  @media(max-width: 640px) {
+    .header { flex-direction: column; align-items: flex-start; gap: 12px; padding: 15px 20px; }
+    .menu-buttons { flex-wrap: wrap; gap: 10px; width: 100%; }
+    .menu-btn, .logout-btn { flex: 1; text-align: center; }
+    #contentArea { padding: 20px; }
   }
 </style>
 </head>
 <body>
 
+<!-- Header -->
 <div class="header">
   <div class="welcome-section">
-    <div class="welcome" id="welcomeMessage">Welcome, Loading...</div>
+    <div class="welcome" id="welcomeMessage">Welcome, User</div>
     <div class="tagline">Give. Feed. Hope.</div>
   </div>
 
   <div class="menu-buttons">
-    <button class="menu-btn" data-page="profile">Profile & Registration</button>
-    <button class="menu-btn" data-page="food">Share Food</button>
-    <button class="menu-btn active" data-page="dashboard">Dashboard</button>
+    <button class="menu-btn active" data-page="profilepage.html">Profile & Registration</button>
+    <button class="menu-btn" data-page="sharefood.html">Share Food</button>
+    <button class="menu-btn" data-page="dashboardpage.html">Dashboard</button>
   </div>
 
   <button class="logout-btn" id="logoutBtn">Logout</button>
 </div>
 
-<div class="main-content" id="mainContent">
-  <div class="loading">
-    <i class="fas fa-spinner fa-spin"></i>
-    <p>Loading dashboard...</p>
-  </div>
+<!-- Dynamic Content Area -->
+<div id="contentArea">
+  <p>Loading...</p>
 </div>
 
-<script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+<!-- Logout overlay -->
+<div class="logout-overlay" id="logoutOverlay">
+  <div class="logout-message" id="logoutMessage"></div>
+  <div class="logout-sub">Redirecting to home...</div>
+</div>
 
-  // FIX: Remove extra spaces in URL and key
-  const supabaseUrl = 'https://xqzdvxyefnhekxaujivq.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxemR2eHllZm5oZWt4YXVqaXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyMTc1MjksImV4cCI6MjA3Mzc5MzUyOX0.RR4VMAQ6CikKyELyY_tSAlfspX5i65fpAEaEbBqF9co';
-  const supabase = createClient(supabaseUrl, supabaseKey);
+<script>
+  // User data storage (using in-memory storage instead of localStorage)
+  let currentUser = { name: 'John Doe', type: 'restaurant' };
+  
+  // Global app data store
+  window.appData = {
+    userData: {
+      name: 'Happy Bites',
+      type: 'Vegetarian',
+      email: 'contact@happybites.com',
+      phone: '+91 9876543210',
+      address: '123, Main Street, City',
+      donationStatus: 'Available',
+      foodPosts: []
+    }
+  };
 
   const welcomeMessage = document.getElementById('welcomeMessage');
   const logoutBtn = document.getElementById('logoutBtn');
-  const mainContent = document.getElementById('mainContent');
+  const logoutOverlay = document.getElementById('logoutOverlay');
+  const logoutMessage = document.getElementById('logoutMessage');
   const menuButtons = document.querySelectorAll('.menu-btn');
+  const contentArea = document.getElementById('contentArea');
 
-  // Check authentication
-  const userEmail = localStorage.getItem('currentUserEmail');
-  const userAccountType = localStorage.getItem('currentUserAccountType');
+  welcomeMessage.textContent = `Welcome ${currentUser.name}, ${capitalize(currentUser.type)}`;
 
-  if (!userEmail || userAccountType !== 'restaurant') {
-    window.location.href = 'login.html';
-  }
+  function capitalize(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
 
-  // Fetch user name for welcome message
-  async function fetchUserName() {
-    try {
-      const { data, error } = await supabase
-        .from('users')
-        .select('name')
-        .eq('gmail', userEmail)
-        .eq('type', 'restaurant')
-        .single();
-
-      if (error) throw error;
-      welcomeMessage.textContent = `Welcome ${data.name}, Restaurant`;
-    } catch (error) {
-      console.error('Error fetching user name:', error);
-      welcomeMessage.textContent = 'Welcome User, Restaurant';
-    }
-  }
-
-  // Load professional profile with masked password
-  async function loadProfilePage() {
-    mainContent.innerHTML = `
-      <div class="loading">
-        <i class="fas fa-spinner fa-spin"></i>
-        <p>Loading your profile...</p>
-      </div>
-    `;
-    
-    try {
-      const { data, error } = await supabase
-        .from('users')
-        .select('name, gmail, password, type, created_at')
-        .eq('gmail', userEmail)
-        .eq('type', 'restaurant')
-        .single();
-
-      if (error) throw error;
+  // Enhanced script execution for dynamically loaded content
+  function executeScripts(container) {
+    const scripts = container.querySelectorAll('script');
+    scripts.forEach(oldScript => {
+      const newScript = document.createElement('script');
       
-      const formattedDate = new Date(data.created_at).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        weekday: 'long'
+      // Copy all attributes
+      Array.from(oldScript.attributes).forEach(attr => {
+        newScript.setAttribute(attr.name, attr.value);
       });
-
-      // MASK PASSWORD - NEVER SHOW PLAIN TEXT
-      const maskedPassword = '••••••••';
       
-      mainContent.innerHTML = `
-        <div style="max-width: 700px; background: white; padding: 32px; border-radius: 16px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); margin: 0 auto;">
-          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 1px solid #e9ecef;">
-            <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #007bff, #0062cc); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
-              <i class="fas fa-utensils"></i>
-            </div>
-            <div>
-              <h1 style="color: #212529; margin: 0; font-size: 28px; font-weight: 700;">Restaurant Profile</h1>
-              <p style="color: #6c757d; margin-top: 4px; font-size: 16px; font-weight: 500;">Manage your account details</p>
-            </div>
-          </div>
-          
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
-            <div style="background: #f8f9fa; border-radius: 12px; padding: 24px; transition: transform 0.2s ease;">
-              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                <div style="width: 36px; height: 36px; background: #e7f1ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #007bff; font-size: 18px;">
-                  <i class="fas fa-user"></i>
-                </div>
-                <h3 style="font-size: 18px; font-weight: 600; color: #212529; margin: 0;">Restaurant Name</h3>
-              </div>
-              <div style="font-size: 17px; color: #495057; word-break: break-all; line-height: 1.5; padding: 8px 0;">
-                ${data.name || '<span style="color:#adb5bd">Not provided</span>'}
-              </div>
-            </div>
-            
-            <div style="background: #f8f9fa; border-radius: 12px; padding: 24px; transition: transform 0.2s ease;">
-              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                <div style="width: 36px; height: 36px; background: #e7f1ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #007bff; font-size: 18px;">
-                  <i class="fas fa-envelope"></i>
-                </div>
-                <h3 style="font-size: 18px; font-weight: 600; color: #212529; margin: 0;">Email Address</h3>
-              </div>
-              <div style="font-size: 17px; color: #495057; word-break: break-all; line-height: 1.5; padding: 8px 0;">
-                ${data.gmail}
-              </div>
-            </div>
-            
-            <div style="background: #f8f9fa; border-radius: 12px; padding: 24px; transition: transform 0.2s ease;">
-              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                <div style="width: 36px; height: 36px; background: #e7f1ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #007bff; font-size: 18px;">
-                  <i class="fas fa-lock"></i>
-                </div>
-                <h3 style="font-size: 18px; font-weight: 600; color: #212529; margin: 0;">Password</h3>
-              </div>
-              <div style="font-size: 17px; color: #495057; line-height: 1.5; padding: 8px 0;">
-                <span style="letter-spacing: 4px; font-size: 24px; color: #212529;">${maskedPassword}</span>
-              </div>
-            </div>
-            
-            <div style="background: #f8f9fa; border-radius: 12px; padding: 24px; transition: transform 0.2s ease;">
-              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                <div style="width: 36px; height: 36px; background: #e7f1ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #007bff; font-size: 18px;">
-                  <i class="fas fa-id-badge"></i>
-                </div>
-                <h3 style="font-size: 18px; font-weight: 600; color: #212529; margin: 0;">Account Type</h3>
-              </div>
-              <div style="font-size: 17px; color: #495057; line-height: 1.5; padding: 8px 0;">
-                Restaurant
-              </div>
-            </div>
-            
-            <div style="background: #f8f9fa; border-radius: 12px; padding: 24px; transition: transform 0.2s ease; grid-column: span 2;">
-              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                <div style="width: 36px; height: 36px; background: #e7f1ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #007bff; font-size: 18px;">
-                  <i class="fas fa-calendar-plus"></i>
-                </div>
-                <h3 style="font-size: 18px; font-weight: 600; color: #212529; margin: 0;">Registration Date</h3>
-              </div>
-              <div style="font-size: 17px; color: #495057; line-height: 1.5; padding: 8px 0;">
-                ${formattedDate}
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-    } catch (error) {
-      console.error('Error loading profile:', error);
-      mainContent.innerHTML = `
-        <div style="padding: 30px; color: #dc3545; background: #fff5f5; border: 1px solid #f1aeb5; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
-          <div style="text-align: center; font-size: 48px; margin-bottom: 16px;">
-            <i class="fas fa-exclamation-triangle"></i>
-          </div>
-          <h3 style="color: #dc3545; margin-top: 0;">Profile Loading Failed</h3>
-          <p>We couldn't retrieve your profile information from our database.</p>
-          <p style="margin-top: 12px; font-size: 14px; color: #842029;">${error.message}</p>
-        </div>
-      `;
-    }
+      // Handle both external and inline scripts
+      if (oldScript.src) {
+        newScript.src = oldScript.src;
+        newScript.onload = () => {
+          // Call initialization functions if they exist
+          if (typeof window.initProfilePage === 'function') {
+            window.initProfilePage();
+          }
+          if (typeof window.initShareFood === 'function') {
+            window.initShareFood();
+          }
+        };
+      } else {
+        newScript.textContent = oldScript.textContent;
+        // Execute inline script immediately
+        setTimeout(() => {
+          try {
+            if (newScript.textContent.includes('initProfilePage') || 
+                newScript.textContent.includes('initShareFood')) {
+              eval(newScript.textContent);
+            }
+          } catch (e) {
+            console.warn('Script execution warning:', e);
+          }
+        }, 0);
+      }
+      
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
   }
 
-  // Load other pages (placeholder implementation)
-  async function loadOtherPage(pageKey) {
-    mainContent.innerHTML = `
-      <div class="loading">
-        <i class="fas fa-spinner fa-spin"></i>
-        <p>Loading content...</p>
-      </div>
-    `;
-    
-    const contentMap = {
-      food: `
-        <div style="max-width: 600px; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.08); margin: 0 auto;">
-          <h2 style="color: #212529;">Food/Leftover Sharing</h2>
-          <p>This is where you'll manage your food sharing listings.</p>
-        </div>
-      `,
-      dashboard: `
-        <div style="max-width: 600px; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.08); margin: 0 auto;">
-          <h2 style="color: #212529;">Dashboard Features</h2>
-          <p>Welcome to your restaurant dashboard! Here you can manage all your activities.</p>
-        </div>
-      `
-    };
-    
-    setTimeout(() => {
-      mainContent.innerHTML = contentMap[pageKey] || '<p>Content not available</p>';
-    }, 300);
+  // Load page content dynamically
+  function loadPageContent(page) {
+    fetch(page)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Page not found');
+        }
+        return res.text();
+      })
+      .then(data => {
+        contentArea.innerHTML = data;
+        executeScripts(contentArea);
+      })
+      .catch(err => {
+        console.error('Error loading page:', err);
+        contentArea.innerHTML = '<p>Error loading content. Please make sure the file exists in the same directory.</p>';
+      });
   }
 
-  // Handle menu button clicks
+  // Menu button click
   menuButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       menuButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      
-      const pageKey = btn.dataset.page;
-      if (pageKey === 'profile') {
-        loadProfilePage();
-      } else {
-        loadOtherPage(pageKey);
-      }
+      const page = btn.getAttribute('data-page');
+      if(page) loadPageContent(page);
     });
   });
 
-  // Initialize
-  window.onload = () => {
-    document.body.style.opacity = '1';
-    fetchUserName();
-    loadOtherPage('dashboard'); // Load dashboard by default
-  };
+  // Load default page
+  loadPageContent("profilepage.html");
 
-  // Logout handler
+  // Logout
   logoutBtn.addEventListener('click', () => {
-    localStorage.removeItem('currentUserEmail');
-    localStorage.removeItem('currentUserAccountType');
-    document.body.style.opacity = '0';
+    logoutMessage.textContent = `Thank you, ${currentUser.name} (${capitalize(currentUser.type)})`;
+    logoutOverlay.classList.add('show');
     setTimeout(() => {
       window.location.href = 'index.html';
-    }, 800);
+    }, 2500);
   });
 </script>
 
