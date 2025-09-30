@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Share Plate - Add User</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+  }
+  .container {
+    display: flex;
+    flex: 1;
+  }
+  .left {
+    flex: 1;
+    background-color: #f2f2f2;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+  }
+  .right {
+    flex: 1;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: #333;
+    flex-direction: column;
+    text-align: center;
+  }
+  h2 { margin-bottom: 20px; }
+  input, select { 
+    width: 100%; 
+    padding: 10px; 
+    margin: 10px 0; 
+    box-sizing: border-box;
+  }
+  .buttonContainer { display: flex; gap: 10px; margin-top: 10px; }
+  button {
+    flex: 1;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+  button[type="submit"] { background-color: #007bff; }
+  button[type="submit"]:hover { background-color: #0056b3; }
+  button[type="button"] { background-color: #ff0000; }
+  button[type="button"]:hover { background-color: #cc0000; }
+
+  /* Success message animation */
+  .success {
+    margin-top: 20px;
+    color: green;
+    font-weight: bold;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  .success.animate {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  
+  /* Loading indicator */
+  .loading {
+    display: none;
+    margin-top: 10px;
+    color: #007bff;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="left">
+    <h2>Welcome New User</h2>
+    <form id="userForm" autocomplete="off">
+      <label for="type">Type</label>
+      <select id="type" required>
+        <option value="" disabled selected>Select your type</option>
+        <option value="restaurant">Restaurant</option>
+        <option value="ngo">NGO</option>
+        <option value="donor">Donor</option>
+      </select>
+
+      <label for="name" id="nameLabel">Name</label>
+      <input type="text" id="name" placeholder="Enter your name" required>
+
+      <label for="gmail">Gmail</label>
+      <input type="email" id="gmail" placeholder="Enter your Gmail" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password" required>
+
+      <div class="buttonContainer">
+        <button type="submit" id="submitBtn">Create User</button>
+        <button type="button" onclick="goBack()">Go Back</button>
+      </div>
+      <div class="loading" id="loadingIndicator">Creating account...</div>
+    </form>
+  </div>
+
+  <div class="right">
+    <p>Welcome New User! Please enter your details</p>
+    <div class="success" id="successMsg"></div>
+  </div>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+  const supabaseUrl = 'https://xqzdvxyefnhekxaujivq.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxemR2eHllZm5oZWt4YXVqaXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyMTc1MjksImV4cCI6MjA3Mzc5MzUyOX0.RR4VMAQ6CikKyELyY_tSAlfspX5i65fpAEaEbBqF9co';
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  const form = document.getElementById('userForm');
+  const successMsg = document.getElementById('successMsg');
+  const typeSelect = document.getElementById('type');
+  const nameLabel = document.getElementById('nameLabel');
+  const nameInput = document.getElementById('name');
+  const submitBtn = document.getElementById('submitBtn');
+  const loadingIndicator = document.getElementById('loadingIndicator');
+
+  // Function to update the name field based on selected type
+  function updateNameField() {
+    const selectedType = typeSelect.value;
+    
+    switch(selectedType) {
+      case 'restaurant':
+        nameLabel.textContent = 'Restaurant Name';
+        nameInput.placeholder = 'Enter restaurant name';
+        break;
+      case 'ngo':
+        nameLabel.textContent = 'NGO Name';
+        nameInput.placeholder = 'Enter NGO name';
+        break;
+      case 'donor':
+        nameLabel.textContent = 'Donor Name';
+        nameInput.placeholder = 'Enter donor name';
+        break;
+      default:
+        nameLabel.textContent = 'Name';
+        nameInput.placeholder = 'Enter your name';
+    }
+  }
+
+  // Add event listener to type select
+  typeSelect.addEventListener('change', updateNameField);
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // Show loading indicator and disable submit button
+    submitBtn.disabled = true;
+    loadingIndicator.style.display = 'block';
+    successMsg.textContent = '';
+
+    const name = document.getElementById('name').value;
+    const type = document.getElementById('type').value;
+    const gmail = document.getElementById('gmail').value;
+    const password = document.getElementById('password').value;
+
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .insert([{ name, type, gmail, password }])
+        .select();
+
+      if (error) {
+        throw error;
+      }
+
+      // Success - show message and redirect
+      successMsg.textContent = `Account created successfully! Redirecting...`;
+      successMsg.style.color = 'green';
+
+      // Start animation after 1 second
+      setTimeout(() => {
+        successMsg.classList.add('animate');
+      }, 1000);
+
+      // Redirect after 3 seconds
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 3000);
+
+    } catch (error) {
+      // Error handling
+      successMsg.textContent = `Error: ${error.message}`;
+      successMsg.style.color = 'red';
+    } finally {
+      // Re-enable the submit button and hide loading indicator
+      submitBtn.disabled = false;
+      loadingIndicator.style.display = 'none';
+      
+      // Only reset the form if there was no error
+      if (!successMsg.textContent.includes('Error')) {
+        form.reset();
+        // Reset the name label after form reset
+        nameLabel.textContent = 'Name';
+        nameInput.placeholder = 'Enter your name';
+      }
+    }
+  });
+
+  window.goBack = function() {
+    window.location.href = "index.html";
+  }
+
+  window.onload = () => {
+    form.reset();
+    successMsg.textContent = '';
+    // Reset the name label on page load
+    nameLabel.textContent = 'Name';
+    nameInput.placeholder = 'Enter your name';
+  };
+</script>
+
+</body>
+</html>
