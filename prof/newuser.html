@@ -22,6 +22,7 @@
     padding: 50px;
     display: flex;
     flex-direction: column;
+    position: relative;
   }
   .right {
     flex: 1;
@@ -40,6 +41,7 @@
     padding: 10px; 
     margin: 10px 0; 
     box-sizing: border-box;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
   }
   .buttonContainer { display: flex; gap: 10px; margin-top: 10px; }
   button {
@@ -55,10 +57,8 @@
   button[type="button"] { background-color: #ff0000; }
   button[type="button"]:hover { background-color: #cc0000; }
 
-  /* Success message animation */
   .success {
     margin-top: 20px;
-    color: green;
     font-weight: bold;
     opacity: 1;
     transform: translateY(0);
@@ -68,12 +68,51 @@
     opacity: 0;
     transform: translateY(-20px);
   }
-  
-  /* Loading indicator */
+
   .loading {
     display: none;
     margin-top: 10px;
     color: #007bff;
+  }
+
+  .availability-msg {
+    font-size: 12px;
+    margin-top: -8px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+  }
+
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+    100% { transform: translateX(0); }
+  }
+  .shake {
+    animation: shake 0.4s ease;
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 8px rgba(220,53,69,0.7);
+  }
+
+  /* Floating error message */
+  .floating-error {
+    position: absolute;
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 12px;
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    z-index: 10;
+  }
+  .floating-error.show {
+    opacity: 1;
+    transform: translateY(-10px);
   }
 </style>
 </head>
@@ -94,6 +133,9 @@
       <label for="name" id="nameLabel">Name</label>
       <input type="text" id="name" placeholder="Enter your name" required>
 
+      <label for="username">User Name</label>
+      <input type="text" id="username" placeholder="Enter your user name" required>
+
       <label for="gmail">Gmail</label>
       <input type="email" id="gmail" placeholder="Enter your Gmail" required>
 
@@ -106,6 +148,7 @@
       </div>
       <div class="loading" id="loadingIndicator">Creating account...</div>
     </form>
+    <div id="floatingError" class="floating-error"></div>
   </div>
 
   <div class="right">
@@ -115,113 +158,129 @@
 </div>
 
 <script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-  const supabaseUrl = 'https://xqzdvxyefnhekxaujivq.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxemR2eHllZm5oZWt4YXVqaXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyMTc1MjksImV4cCI6MjA3Mzc5MzUyOX0.RR4VMAQ6CikKyELyY_tSAlfspX5i65fpAEaEbBqF9co';
-  const supabase = createClient(supabaseUrl, supabaseKey);
+const supabaseUrl = 'https://xqzdvxyefnhekxaujivq.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxemR2eHllZm5oZWt4YXVqaXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyMTc1MjksImV4cCI6MjA3Mzc5MzUyOX0.RR4VMAQ6CikKyELyY_tSAlfspX5i65fpAEaEbBqF9co';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-  const form = document.getElementById('userForm');
-  const successMsg = document.getElementById('successMsg');
-  const typeSelect = document.getElementById('type');
-  const nameLabel = document.getElementById('nameLabel');
-  const nameInput = document.getElementById('name');
-  const submitBtn = document.getElementById('submitBtn');
-  const loadingIndicator = document.getElementById('loadingIndicator');
+const form = document.getElementById('userForm');
+const typeSelect = document.getElementById('type');
+const nameLabel = document.getElementById('nameLabel');
+const nameInput = document.getElementById('name');
+const submitBtn = document.getElementById('submitBtn');
+const loadingIndicator = document.getElementById('loadingIndicator');
+const usernameInput = document.getElementById('username');
+const gmailInput = document.getElementById('gmail');
+const successMsg = document.getElementById('successMsg');
+const floatingError = document.getElementById('floatingError');
 
-  // Function to update the name field based on selected type
-  function updateNameField() {
-    const selectedType = typeSelect.value;
-    
-    switch(selectedType) {
-      case 'restaurant':
-        nameLabel.textContent = 'Restaurant Name';
-        nameInput.placeholder = 'Enter restaurant name';
-        break;
-      case 'ngo':
-        nameLabel.textContent = 'NGO Name';
-        nameInput.placeholder = 'Enter NGO name';
-        break;
-      case 'donor':
-        nameLabel.textContent = 'Donor Name';
-        nameInput.placeholder = 'Enter donor name';
-        break;
-      default:
-        nameLabel.textContent = 'Name';
-        nameInput.placeholder = 'Enter your name';
-    }
+let usernameAvailable = false;
+let gmailAvailable = false;
+
+function updateNameField() {
+  const selectedType = typeSelect.value;
+  switch(selectedType) {
+    case 'restaurant': nameLabel.textContent = 'Restaurant Name'; nameInput.placeholder = 'Enter restaurant name'; break;
+    case 'ngo': nameLabel.textContent = 'NGO Name'; nameInput.placeholder = 'Enter NGO name'; break;
+    case 'donor': nameLabel.textContent = 'Donor Name'; nameInput.placeholder = 'Enter donor name'; break;
+    default: nameLabel.textContent = 'Name'; nameInput.placeholder = 'Enter your name';
   }
+}
 
-  // Add event listener to type select
-  typeSelect.addEventListener('change', updateNameField);
+typeSelect.addEventListener('change', updateNameField);
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    // Show loading indicator and disable submit button
-    submitBtn.disabled = true;
-    loadingIndicator.style.display = 'block';
-    successMsg.textContent = '';
+async function checkAvailability(column, value) {
+  if (!value) return false;
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .eq(column, value)
+    .limit(1);
+  if (error) { console.error(error); return false; }
+  return data.length === 0;
+}
 
-    const name = document.getElementById('name').value;
-    const type = document.getElementById('type').value;
-    const gmail = document.getElementById('gmail').value;
-    const password = document.getElementById('password').value;
+async function validateField(inputElem, column, errorMsg) {
+  const available = await checkAvailability(column, inputElem.value.trim());
+  if (column === 'username') usernameAvailable = available;
+  if (column === 'gmail') gmailAvailable = available;
 
-    try {
-      const { data, error } = await supabase
-        .from('users')
-        .insert([{ name, type, gmail, password }])
-        .select();
-
-      if (error) {
-        throw error;
-      }
-
-      // Success - show message and redirect
-      successMsg.textContent = `Account created successfully! Redirecting...`;
-      successMsg.style.color = 'green';
-
-      // Start animation after 1 second
-      setTimeout(() => {
-        successMsg.classList.add('animate');
-      }, 1000);
-
-      // Redirect after 3 seconds
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 3000);
-
-    } catch (error) {
-      // Error handling
-      successMsg.textContent = `Error: ${error.message}`;
-      successMsg.style.color = 'red';
-    } finally {
-      // Re-enable the submit button and hide loading indicator
-      submitBtn.disabled = false;
-      loadingIndicator.style.display = 'none';
-      
-      // Only reset the form if there was no error
-      if (!successMsg.textContent.includes('Error')) {
-        form.reset();
-        // Reset the name label after form reset
-        nameLabel.textContent = 'Name';
-        nameInput.placeholder = 'Enter your name';
-      }
-    }
-  });
-
-  window.goBack = function() {
-    window.location.href = "index.html";
+  let msgElem = inputElem.nextElementSibling;
+  if (!msgElem || !msgElem.classList.contains('availability-msg')) {
+    msgElem = document.createElement('div');
+    msgElem.classList.add('availability-msg');
+    inputElem.parentNode.insertBefore(msgElem, inputElem.nextSibling);
   }
+  if (available) {
+    msgElem.textContent = 'Available';
+    msgElem.style.color = 'green';
+  } else {
+    msgElem.textContent = errorMsg;
+    msgElem.style.color = 'red';
+    inputElem.classList.add('shake');
+    setTimeout(() => inputElem.classList.remove('shake'), 500);
+  }
+  submitBtn.disabled = !(usernameAvailable && gmailAvailable);
+}
 
-  window.onload = () => {
+usernameInput.addEventListener('keyup', () => validateField(usernameInput, 'username', 'Username already in use'));
+gmailInput.addEventListener('keyup', () => validateField(gmailInput, 'gmail', 'Gmail already in use'));
+
+function showFloatingError(message, inputElem) {
+  floatingError.textContent = message;
+  floatingError.style.top = (inputElem.offsetTop - 35) + 'px';
+  floatingError.style.left = inputElem.offsetLeft + 'px';
+  floatingError.classList.add('show');
+  inputElem.classList.add('shake');
+  setTimeout(() => {
+    floatingError.classList.remove('show');
+    inputElem.classList.remove('shake');
+  }, 2000);
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  if (!usernameAvailable) { showFloatingError('Username already in use', usernameInput); return; }
+  if (!gmailAvailable) { showFloatingError('Gmail already in use', gmailInput); return; }
+
+  submitBtn.disabled = true;
+  loadingIndicator.style.display = 'block';
+  successMsg.textContent = '';
+
+  const name = nameInput.value.trim();
+  const username = usernameInput.value.trim();
+  const type = typeSelect.value;
+  const gmail = gmailInput.value.trim();
+  const password = document.getElementById('password').value.trim();
+
+  try {
+    const { error } = await supabase.from('users').insert([{ name, username, type, gmail, password }]);
+    if (error) throw error;
+
+    successMsg.textContent = 'Account created successfully! Redirecting...';
+    successMsg.style.color = 'green';
+    setTimeout(() => successMsg.classList.add('animate'), 1000);
+    setTimeout(() => window.location.href = "index.html", 3000);
+
     form.reset();
-    successMsg.textContent = '';
-    // Reset the name label on page load
-    nameLabel.textContent = 'Name';
-    nameInput.placeholder = 'Enter your name';
-  };
+    updateNameField();
+    usernameAvailable = false;
+    gmailAvailable = false;
+    submitBtn.disabled = true;
+
+  } catch (error) {
+    successMsg.textContent = `Error: ${error.message}`;
+    successMsg.style.color = 'red';
+  } finally {
+    loadingIndicator.style.display = 'none';
+    submitBtn.disabled = !(usernameAvailable && gmailAvailable);
+  }
+});
+
+window.goBack = () => window.location.href = "index.html";
+window.onload = () => { form.reset(); successMsg.textContent = ''; updateNameField(); submitBtn.disabled = true; };
 </script>
 
 </body>
