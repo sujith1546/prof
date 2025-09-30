@@ -1,11 +1,9 @@
 <!-- Share Food Page Content (without HTML wrapper) -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f3f4f6;
-    margin: 0;
-    padding: 0;
+  /* Share Food Specific Styles */
+  .share-food-container {
+    min-height: calc(100vh - 120px);
   }
 
   /* Layout */
@@ -390,138 +388,140 @@
   }
 </style>
 
-<div class="container">
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="menu-header"><h3>Share Food</h3></div>
-    <button class="menu-item active" data-section="postFood"><i class="fas fa-plus"></i> Post Food</button>
-    <button class="menu-item" data-section="myPosts"><i class="fas fa-list"></i> My Posts</button>
-    <button class="menu-item" data-section="history"><i class="fas fa-history"></i> Donation History</button>
-  </aside>
+<div class="share-food-container">
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="menu-header"><h3>Share Food</h3></div>
+      <button class="menu-item active" data-section="postFood"><i class="fas fa-plus"></i> Post Food</button>
+      <button class="menu-item" data-section="myPosts"><i class="fas fa-list"></i> My Posts</button>
+      <button class="menu-item" data-section="history"><i class="fas fa-history"></i> Donation History</button>
+    </aside>
 
-  <!-- Content Area -->
-  <div class="content-area">
-    <!-- Post Food Section -->
-    <section id="postFood" class="section active">
-      <div class="card">
-        <h2>Post Food for Those in Need</h2>
+    <!-- Content Area -->
+    <div class="content-area">
+      <!-- Post Food Section -->
+      <section id="postFood" class="section active">
+        <div class="card">
+          <h2>Post Food for Those in Need</h2>
 
-        <div class="form-group">
-          <label for="foodName">Food Item</label>
-          <input type="text" id="foodName" placeholder="Enter food item name">
-        </div>
-
-        <div class="form-group">
-          <label for="foodCategory">Food Category</label>
-          <select id="foodCategory">
-            <option value="">Select Category</option>
-            <option value="cooked">Cooked Meal</option>
-            <option value="packaged">Packaged Food</option>
-            <option value="fresh">Fresh Produce</option>
-            <option value="baked">Baked Goods</option>
-            <option value="dairy">Dairy Products</option>
-            <option value="beverages">Beverages</option>
-            <option value="snacks">Snacks</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="quantity">Quantity</label>
-          <input type="text" id="quantity" placeholder="Enter quantity (e.g., 10 packets, 5 kg)">
-        </div>
-
-        <div class="form-group">
-          <label for="expiry">Expiry / Best Before</label>
-          <input type="date" id="expiry">
-        </div>
-
-        <div class="form-group">
-          <label for="location">Pickup Location</label>
-          <input type="text" id="location" placeholder="Enter address for pickup">
-        </div>
-
-        <div class="form-group">
-          <label for="contact">Contact Information</label>
-          <input type="text" id="contact" placeholder="Phone number for coordination">
-        </div>
-
-        <div class="form-group">
-          <label for="notes">Notes (Optional)</label>
-          <textarea id="notes" placeholder="Any special instructions, dietary info, or additional details"></textarea>
-        </div>
-
-        <button class="btn-primary" id="postFoodBtn">Post Food</button>
-      </div>
-    </section>
-
-    <!-- My Posts Section -->
-    <section id="myPosts" class="section">
-      <div class="card">
-        <h2>My Active Posts</h2>
-        <div class="food-list" id="foodList">
-          <!-- Sample active posts -->
-          <div class="food-item">
-            <div class="food-details">
-              <span>Fresh Vegetable Curry - 8 servings <span class="category-badge">Cooked Meal</span></span>
-              <div class="food-meta">Expires: 2024-01-15 | Location: 123 Main Street | Contact: +1 555-0123</div>
-              <div class="posted-time">Posted on: <span class="posted-time-value">2024-01-10 14:30:25</span></div>
-              <div class="food-notes">Vegetarian, no allergens</div>
-            </div>
-            <div class="food-actions">
-              <span class="status-badge status-pending">Pending</span>
-              <button class="btn-success">Mark Claimed</button>
-              <button class="btn-danger">Remove</button>
-            </div>
+          <div class="form-group">
+            <label for="foodName">Food Item</label>
+            <input type="text" id="foodName" placeholder="Enter food item name">
           </div>
-          <div class="food-item">
-            <div class="food-details">
-              <span>Bread & Pastries - 12 pieces <span class="category-badge">Baked Goods</span></span>
-              <div class="food-meta">Expires: 2024-01-14 | Location: 456 Oak Avenue | Contact: +1 555-0456</div>
-              <div class="posted-time">Posted on: <span class="posted-time-value">2024-01-10 10:15:42</span></div>
-              <div class="food-notes">Fresh from bakery</div>
-            </div>
-            <div class="food-actions">
-              <span class="status-badge status-pending">Pending</span>
-              <button class="btn-success">Mark Claimed</button>
-              <button class="btn-danger">Remove</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Donation History Section -->
-    <section id="history" class="section">
-      <div class="card">
-        <h2>Donation History</h2>
-        <div class="food-list" id="historyList">
-          <!-- Sample history items -->
-          <div class="food-item">
-            <div class="food-details">
-              <span>Rice & Lentils - 15 meals <span class="category-badge">Cooked Meal</span></span>
-              <div class="food-meta">Donated: 2024-01-10 | Location: Community Center</div>
-              <div class="posted-time">Posted on: <span class="posted-time-value">2024-01-09 16:20:15</span></div>
-              <div class="food-notes">Helped 5 families</div>
-            </div>
-            <div class="food-actions">
-              <span class="status-badge status-delivered">Delivered</span>
-            </div>
+          <div class="form-group">
+            <label for="foodCategory">Food Category</label>
+            <select id="foodCategory">
+              <option value="">Select Category</option>
+              <option value="cooked">Cooked Meal</option>
+              <option value="packaged">Packaged Food</option>
+              <option value="fresh">Fresh Produce</option>
+              <option value="baked">Baked Goods</option>
+              <option value="dairy">Dairy Products</option>
+              <option value="beverages">Beverages</option>
+              <option value="snacks">Snacks</option>
+              <option value="other">Other</option>
+            </select>
           </div>
-          <div class="food-item">
-            <div class="food-details">
-              <span>Fruits & Vegetables - 8 kg <span class="category-badge">Fresh Produce</span></span>
-              <div class="food-meta">Donated: 2024-01-08 | Location: Local Shelter</div>
-              <div class="posted-time">Posted on: <span class="posted-time-value">2024-01-07 09:45:33</span></div>
-              <div class="food-notes">Fresh produce</div>
+
+          <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <input type="text" id="quantity" placeholder="Enter quantity (e.g., 10 packets, 5 kg)">
+          </div>
+
+          <div class="form-group">
+            <label for="expiry">Expiry / Best Before</label>
+            <input type="date" id="expiry">
+          </div>
+
+          <div class="form-group">
+            <label for="location">Pickup Location</label>
+            <input type="text" id="location" placeholder="Enter address for pickup">
+          </div>
+
+          <div class="form-group">
+            <label for="contact">Contact Information</label>
+            <input type="text" id="contact" placeholder="Phone number for coordination">
+          </div>
+
+          <div class="form-group">
+            <label for="notes">Notes (Optional)</label>
+            <textarea id="notes" placeholder="Any special instructions, dietary info, or additional details"></textarea>
+          </div>
+
+          <button class="btn-primary" id="postFoodBtn">Post Food</button>
+        </div>
+      </section>
+
+      <!-- My Posts Section -->
+      <section id="myPosts" class="section">
+        <div class="card">
+          <h2>My Active Posts</h2>
+          <div class="food-list" id="foodList">
+            <!-- Sample active posts -->
+            <div class="food-item">
+              <div class="food-details">
+                <span>Fresh Vegetable Curry - 8 servings <span class="category-badge">Cooked Meal</span></span>
+                <div class="food-meta">Expires: 2024-01-15 | Location: 123 Main Street | Contact: +1 555-0123</div>
+                <div class="posted-time">Posted on: <span class="posted-time-value">2024-01-10 14:30:25</span></div>
+                <div class="food-notes">Vegetarian, no allergens</div>
+              </div>
+              <div class="food-actions">
+                <span class="status-badge status-pending">Pending</span>
+                <button class="btn-success">Mark Claimed</button>
+                <button class="btn-danger">Remove</button>
+              </div>
             </div>
-            <div class="food-actions">
-              <span class="status-badge status-delivered">Delivered</span>
+            <div class="food-item">
+              <div class="food-details">
+                <span>Bread & Pastries - 12 pieces <span class="category-badge">Baked Goods</span></span>
+                <div class="food-meta">Expires: 2024-01-14 | Location: 456 Oak Avenue | Contact: +1 555-0456</div>
+                <div class="posted-time">Posted on: <span class="posted-time-value">2024-01-10 10:15:42</span></div>
+                <div class="food-notes">Fresh from bakery</div>
+              </div>
+              <div class="food-actions">
+                <span class="status-badge status-pending">Pending</span>
+                <button class="btn-success">Mark Claimed</button>
+                <button class="btn-danger">Remove</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <!-- Donation History Section -->
+      <section id="history" class="section">
+        <div class="card">
+          <h2>Donation History</h2>
+          <div class="food-list" id="historyList">
+            <!-- Sample history items -->
+            <div class="food-item">
+              <div class="food-details">
+                <span>Rice & Lentils - 15 meals <span class="category-badge">Cooked Meal</span></span>
+                <div class="food-meta">Donated: 2024-01-10 | Location: Community Center</div>
+                <div class="posted-time">Posted on: <span class="posted-time-value">2024-01-09 16:20:15</span></div>
+                <div class="food-notes">Helped 5 families</div>
+              </div>
+              <div class="food-actions">
+                <span class="status-badge status-delivered">Delivered</span>
+              </div>
+            </div>
+            <div class="food-item">
+              <div class="food-details">
+                <span>Fruits & Vegetables - 8 kg <span class="category-badge">Fresh Produce</span></span>
+                <div class="food-meta">Donated: 2024-01-08 | Location: Local Shelter</div>
+                <div class="posted-time">Posted on: <span class="posted-time-value">2024-01-07 09:45:33</span></div>
+                <div class="food-notes">Fresh produce</div>
+              </div>
+              <div class="food-actions">
+                <span class="status-badge status-delivered">Delivered</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   </div>
 </div>
 
